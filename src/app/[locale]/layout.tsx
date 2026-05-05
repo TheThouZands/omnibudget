@@ -13,7 +13,7 @@ const instrumentSerif = Instrument_Serif({
 
 const instrumentSans = Instrument_Sans({
   weight: "variable",
-  variable: "--font-geist-mono",
+  variable: "--font-instrument-sans",
   subsets: ["latin"],
 });
 
@@ -39,7 +39,7 @@ export default async function LocaleLayout({ children, params }: Props) {
   }
 
   return (
-      <html lang={locale}>
+      <html lang={locale} className={`${instrumentSans.variable} ${instrumentSerif.variable}`}>
         <body>
           <NextIntlClientProvider>
             {children}
