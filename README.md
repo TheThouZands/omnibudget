@@ -1,36 +1,35 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Omnibudget
 
-## Getting Started
+Omnibudget is a Next.js presentation app backed by Supabase/Postgres. Domain models live in Drizzle (`src/db/schema.ts`), while Supabase owns migration files and delivery.
 
-First, run the development server:
+## Development
 
-```bash
+```sh
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Local development reads `.env.local`. Switching Git branches does not automatically switch the database used by `next dev`; pull or write the branch-specific environment values before starting the server.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Database Workflow
 
-## Learn More
+Drizzle is the model generator and Supabase is the migration runner.
 
-To learn more about Next.js, take a look at the following resources:
+```sh
+npm run db:generate      # Generate SQL from src/db/schema.ts into supabase/migrations
+npm run db:check         # Validate generated Drizzle migration metadata
+npm run db:migrate:dry   # Show pending Supabase migrations for the linked project
+npm run db:migrate       # Apply pending migrations through Supabase
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Commit each real database migration by itself. Use `drizzle-kit migrate` or `drizzle-kit push` only for disposable local testing, not for shared Supabase projects.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+For a Supabase preview branch, retrieve branch-scoped values before local testing:
 
-## Deploy on Vercel
+```sh
+npx supabase branches get <branch-name-or-id> -o env
+vercel env pull .env.local --environment=preview --git-branch=<branch-name>
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Vercel preview deployments can receive the matching Supabase branch environment automatically once the Supabase/Vercel branching integration is connected.

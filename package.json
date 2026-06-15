@@ -6,8 +6,10 @@
     "dev": "next dev",
     "build": "next build",
     "db:generate": "drizzle-kit generate",
-    "db:migrate": "drizzle-kit migrate",
-    "db:push": "drizzle-kit push",
+    "db:check": "drizzle-kit check",
+    "db:migrate": "npx supabase db push --linked",
+    "db:migrate:dry": "npx supabase db push --linked --dry-run",
+    "db:push": "npm run db:migrate",
     "db:studio": "drizzle-kit studio",
     "start": "next start",
     "lint": "eslint"

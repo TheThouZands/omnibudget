@@ -18,10 +18,13 @@ const databaseUrl = readEnv("DATABASE_URL", "POSTGRES_URL");
 
 export default defineConfig({
   schema: "./src/db/schema.ts",
-  out: "./drizzle",
+  out: "./supabase/migrations",
   dialect: "postgresql",
   dbCredentials: {
     url: databaseUrl ?? "",
+  },
+  migrations: {
+    prefix: "supabase",
   },
   strict: true,
   verbose: true,
