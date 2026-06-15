@@ -12,6 +12,14 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 Local development reads `.env.local`. Switching Git branches does not automatically switch the database used by `next dev`; pull or write the branch-specific environment values before starting the server.
 
+For an isolated local database, let Supabase run the Docker stack and write local env values:
+
+```sh
+npm run dev:local
+```
+
+This starts Supabase locally, writes `.env.development.local`, and starts Next.js. Use `npm run db:local:stop` when you are done.
+
 ## Database Workflow
 
 Drizzle is the model generator and Supabase is the migration runner.
@@ -19,17 +27,32 @@ Drizzle is the model generator and Supabase is the migration runner.
 ```sh
 npm run db:generate      # Generate SQL from src/db/schema.ts into supabase/migrations
 npm run db:check         # Validate generated Drizzle migration metadata
-npm run db:migrate:dry   # Show pending Supabase migrations for the linked project
-npm run db:migrate       # Apply pending migrations through Supabase
+npm run db:migrate       # Apply pending migrations to the local Supabase Docker DB
+npm run db:deploy:dry    # Show pending migrations for the linked Supabase project
+npm run db:deploy        # Apply pending migrations to the linked Supabase project
 ```
 
 Commit each real database migration by itself. Use `drizzle-kit migrate` or `drizzle-kit push` only for disposable local testing, not for shared Supabase projects.
 
+For ordinary feature work:
+
+```sh
+git switch -c feature/name
+npm run dev:local
+npm run db:generate
+npm run db:check
+npm run db:migrate
+```
+
+Commit the generated migration on its own. After opening a PR, Supabase branching can apply `supabase/migrations` to the preview branch while Vercel builds the matching preview deployment.
+
 For a Supabase preview branch, retrieve branch-scoped values before local testing:
 
 ```sh
-npx supabase branches get <branch-name-or-id> -o env
+npm run env:preview -- <branch-name-or-id>
 vercel env pull .env.local --environment=preview --git-branch=<branch-name>
 ```
+
+The `env:preview` command writes `.env.development.local` from Supabase branch credentials, so local `npm run dev` points at that branch DB. The Vercel command is useful when you also need other Vercel preview variables.
 
 Vercel preview deployments can receive the matching Supabase branch environment automatically once the Supabase/Vercel branching integration is connected.

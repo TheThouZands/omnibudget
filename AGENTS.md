@@ -6,7 +6,7 @@ It uses next-intl
 
 Use Conventional-Commits
 
-Drizzle is the TypeScript model source; Supabase owns migration files and DB migration delivery. Generate SQL from `src/db/schema.ts` into `supabase/migrations`, apply it with Supabase (`npm run db:migrate`), and do not use `drizzle-kit migrate` or `drizzle-kit push` against shared databases unless it is throwaway local testing.
+Drizzle is the TypeScript model source; Supabase owns migration files and DB migration delivery. Generate SQL from `src/db/schema.ts` into `supabase/migrations`, apply it locally with Supabase (`npm run db:migrate`), and deploy it to the linked Supabase project with `npm run db:deploy`. Do not use `drizzle-kit migrate` or `drizzle-kit push` against shared databases unless it is throwaway local testing.
 
 Commit each database migration by itself, unless it is only local SQL generation/testing that does not affect DB history.
 
