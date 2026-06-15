@@ -1,5 +1,9 @@
-<!-- BEGIN:nextjs-agent-rules -->
-# This is NOT the Next.js you know
+# working with Omnibudget
 
-This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` before writing any code. Heed deprecation notices.
-<!-- END:nextjs-agent-rules -->
+Omnibudget is based off next.js, this is the fullstack presentation module for web
+
+It uses next-intl
+
+Use Conventional-Commits
+
+Keep this NextJS app's structure as close as possible to following MVC, like in Rails or Laravel, to save on round trips, as well as connecting to express, it also is to use Drizzle as the model generator, and can connect to the DB by itself
