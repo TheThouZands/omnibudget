@@ -3,6 +3,7 @@ import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import {Instrument_Sans, Instrument_Serif} from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import "../globals.scss";
 
 const instrumentSerif = Instrument_Serif({
@@ -44,6 +45,7 @@ export default async function LocaleLayout({ children, params }: Props) {
           <NextIntlClientProvider>
             {children}
           </NextIntlClientProvider>
+          <Analytics />
         </body>
       </html>
   );
