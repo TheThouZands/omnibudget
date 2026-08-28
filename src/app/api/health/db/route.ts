@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-import { dbClient } from "@/db";
 
 export const dynamic = "force-dynamic";
 
@@ -7,6 +6,8 @@ export async function GET() {
   const startedAt = performance.now();
 
   try {
+    // Public, stateless tools must build without configuring the optional database.
+    const { dbClient } = await import("@/db");
     const rows = await dbClient`select 1 as ok`;
     const result = rows[0] as { ok?: number } | undefined;
 
