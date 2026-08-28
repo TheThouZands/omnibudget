@@ -5,7 +5,3 @@ Evidencia: GA7-220501096-AA3-EV01
 Módulo: preparación de movimientos desde un archivo CSV
 Aprendiz: Paulo Sánchez Contreras
 Ficha: 3235889
-
-La implementación se preparó en commits locales de la rama main.
-Antes de la entrega académica, publique los commits aprobados y verifique
-que el instructor puede acceder a la versión correspondiente en este enlace.

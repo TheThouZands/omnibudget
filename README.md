@@ -4,7 +4,7 @@ Omnibudget is a Next.js presentation app backed by Supabase/Postgres. Domain mod
 
 ## Independent CSV module
 
-The CSV statement preparation module runs without a database, Supabase credentials, a user account, or an Express service. It reads a file, validates its rows, flags possible duplicates within that file, and exports the selected valid rows. It does not post transactions to the ledger.
+The CSV statement preparation module runs without a database, Supabase credentials, a user account, or an Express service. It reads a file, validates its rows, flags possible duplicates within that file, and exports the selected valid rows.
 
 ```sh
 npm ci
@@ -22,7 +22,7 @@ npm run build
 npm run typecheck
 ```
 
-Database-dependent application routes still need the configuration described below. Do not run database setup or migration commands merely to use the CSV module.
+The database workflow below applies to the application's database-backed features.
 
 ## Development
 
