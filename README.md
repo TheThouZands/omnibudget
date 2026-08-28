@@ -2,6 +2,28 @@
 
 Omnibudget is a Next.js presentation app backed by Supabase/Postgres. Domain models live in Drizzle (`src/db/schema.ts`), while Supabase owns migration files and delivery.
 
+## Independent CSV module
+
+The CSV statement preparation module runs without a database, Supabase credentials, a user account, or an Express service. It reads a file, validates its rows, flags possible duplicates within that file, and exports the selected valid rows. It does not post transactions to the ledger.
+
+```sh
+npm ci
+npm run dev
+```
+
+Open [http://localhost:3000/es/csv-import](http://localhost:3000/es/csv-import). Choose **Usar ejemplo ficticio** to try the module without sending personal data. The Spanish interface uses native HTML controls and has no module-specific styles.
+
+The backend is in `src/modules/csv-import`. Next.js routes only adapt HTTP requests; the temporary frontend imports backend contracts as types and calls the API. See the [Spanish module guide](docs/modules/csv-import.md) and the [GA7-220501096-AA3-EV01 delivery notes](evidence/GA7-220501096-AA3-EV01/README.md).
+
+```sh
+npm test
+npm run lint
+npm run build
+npm run typecheck
+```
+
+Database-dependent application routes still need the configuration described below. Do not run database setup or migration commands merely to use the CSV module.
+
 ## Development
 
 ```sh
