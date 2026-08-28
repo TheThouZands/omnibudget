@@ -256,6 +256,26 @@ describe("exportCsvRequest", () => {
 });
 
 describe("request and file byte limits", () => {
+  it("copies tiny transport chunks before their source buffer is reused", async () => {
+    const encoded = post(fileForm());
+    const source = new Uint8Array(await encoded.arrayBuffer());
+    const byte = new Uint8Array(1);
+    let offset = 0;
+    const body = new ReadableStream<Uint8Array>({
+      pull(controller) {
+        if (offset === source.length) controller.close();
+        else {
+          byte[0] = source[offset++];
+          controller.enqueue(byte);
+        }
+      },
+    }, { highWaterMark: 0 });
+    const init = { method: "POST", body, headers: encoded.headers, duplex: "half" };
+    const response = await inspectCsvRequest(new Request("http://localhost/api/csv", init));
+    expect(response.status).toBe(200);
+    expect((await response.json()).totalRows).toBe(2);
+  });
+
   it.each([undefined, "1"])("counts actual multipart bytes with Content-Length %s", async (declaredLength) => {
     const encoded = post(fileForm("x".repeat(REQUEST_LIMIT + 128 * 1024)));
     const bytes = new Uint8Array(await encoded.arrayBuffer());

@@ -21,31 +21,26 @@ async function readBoundedFormData(request: Request): Promise<FormData> {
 
   // Count actual stream bytes as well: a client can omit or falsify Content-Length.
   const reader = request.body.getReader();
-  const chunks: Uint8Array[] = [];
+  // One buffer bounds allocations even when the transport delivers millions of tiny chunks.
+  const bytes = new Uint8Array(MAX_REQUEST_BYTES);
   let length = 0;
   try {
     while (true) {
       const chunk = await reader.read();
       if (chunk.done) break;
-      length += chunk.value.byteLength;
-      if (length > MAX_REQUEST_BYTES) {
+      if (length + chunk.value.byteLength > MAX_REQUEST_BYTES) {
         await reader.cancel();
         throw new CsvRequestError("request_too_large", 413);
       }
-      chunks.push(chunk.value);
+      bytes.set(chunk.value, length);
+      length += chunk.value.byteLength;
     }
   } finally {
     reader.releaseLock();
   }
 
-  const bytes = new Uint8Array(length);
-  let offset = 0;
-  for (const chunk of chunks) {
-    bytes.set(chunk, offset);
-    offset += chunk.byteLength;
-  }
   try {
-    return await new Response(bytes, { headers: { "content-type": contentType } }).formData();
+    return await new Response(bytes.subarray(0, length), { headers: { "content-type": contentType } }).formData();
   } catch {
     throw new CsvRequestError("invalid_request");
   }
