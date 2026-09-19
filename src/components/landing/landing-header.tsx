@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useTranslations } from "next-intl";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Link } from "@/i18n/navigation";
 
@@ -17,11 +17,34 @@ const navigationItems = [
 export function LandingHeader() {
   const t = useTranslations("Landing.navigation");
   const [isOpen, setIsOpen] = useState(false);
+  const [isBrandVisible, setIsBrandVisible] = useState(false);
   const closeMenu = () => setIsOpen(false);
+
+  useEffect(() => {
+    const heroLogo = document.getElementById("landing-hero-logo");
+
+    if (!heroLogo) {
+      return;
+    }
+
+    const observer = new IntersectionObserver(([entry]) => {
+      setIsBrandVisible(!entry.isIntersecting);
+    });
+
+    observer.observe(heroLogo);
+
+    return () => observer.disconnect();
+  }, []);
 
   return (
     <header className={styles.header}>
-      <a className={styles.brand} href="#top" aria-label={t("homeLabel")}>
+      <a
+        className={`${styles.brand} ${isBrandVisible ? styles.brandVisible : ""}`}
+        href="#top"
+        aria-label={t("homeLabel")}
+        aria-hidden={!isBrandVisible}
+        tabIndex={isBrandVisible ? undefined : -1}
+      >
         <Image
           src="/omnibudget.svg"
           alt="Omnibudget"

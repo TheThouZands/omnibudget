@@ -26,6 +26,7 @@ export default function Home() {
           <div className={styles.heroContent}>
             <h1 id="landing-title" className={styles.heroTitle}>
               <Image
+                id="landing-hero-logo"
                 src="/omnibudget.svg"
                 alt="Omnibudget"
                 width={647}
