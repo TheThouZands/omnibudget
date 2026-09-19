@@ -2,6 +2,18 @@
   position: absolute;
   inset: 0;
   overflow: hidden;
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    #000 0,
+    #000 calc(100% - 96px),
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    #000 0,
+    #000 calc(100% - 96px),
+    transparent 100%
+  );
   opacity: 0.28;
   pointer-events: none;
   user-select: none;
@@ -20,6 +32,23 @@
   top: auto;
   bottom: -22vw;
   transform: rotate(180deg);
+}
+
+.closing {
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0,
+    #000 96px,
+    #000 calc(100% - 96px),
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0,
+    #000 96px,
+    #000 calc(100% - 96px),
+    transparent 100%
+  );
 }
 
 @media (max-aspect-ratio: 1 / 1) {
