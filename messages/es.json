@@ -2,6 +2,19 @@
   "asd": {
     "lol": "jajaja"
   },
+  "Landing": {
+    "navigation": {
+      "ariaLabel": "Navegación principal",
+      "homeLabel": "Ir al inicio de Omnibudget",
+      "openMenu": "Abrir el menú",
+      "closeMenu": "Cerrar el menú",
+      "features": "Funciones",
+      "pricing": "Precios",
+      "about": "Acerca de",
+      "github": "GitHub",
+      "enter": "Entrar a la plataforma"
+    }
+  },
   "CsvImport": {
     "title": "Preparar movimientos desde un archivo CSV (HU-ACC-03)",
     "metaDescription": "Revise un archivo CSV, asigne sus columnas y descargue los movimientos válidos sin guardarlos en una cuenta.",
