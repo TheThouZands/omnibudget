@@ -16,12 +16,13 @@ The landing implementation follows the content-bearing inner frames from the WIP
 ## Implementation evidence
 
 - Local route: `http://127.0.0.1:3100/es`.
-- Desktop full-page capture: `design-qa/landing-figma-implementation-desktop-full.png` — 1425 × 3365 px.
-- Mobile full-page capture: `design-qa/landing-figma-implementation-mobile-full.png` — 375 × 3535 px.
+- Desktop baseline capture: `design-qa/landing-figma-implementation-desktop-full.png` — 1425 × 3365 px.
+- Mobile baseline capture: `design-qa/landing-figma-implementation-mobile-full.png` — 375 × 3535 px.
 - Desktop hero capture: `design-qa/landing-figma-implementation-desktop-hero.png`.
 - Desktop editorial capture: `design-qa/landing-figma-implementation-desktop-editorial.png`.
 - Mobile hero capture: `design-qa/landing-figma-implementation-mobile-hero.png`.
 - Mobile editorial capture: `design-qa/landing-figma-implementation-mobile-editorial.png`.
+- Latest annotation-pass captures were inspected directly in the Codex in-app browser at 1440 × 900 and 390 × 844 CSS viewports. The current full-page rendered sizes are 1425 × 3654 px on desktop and 375 × 4104 px on mobile.
 
 ## Viewport and normalization
 
@@ -66,6 +67,7 @@ These crops were required because the navigation labels, hero controls, serif di
 - Desktop content keeps the 150 px editorial margins, 120 px section rhythm, and 295 px reserved illustration columns.
 - Mobile content uses the Figma 12 px edge spacing and preserves the 120 px editorial rhythm.
 - Anchor targets use a 100 px scroll margin so the sticky navigation does not cover headings.
+- The footer follows the same desktop content rails and collapses to bordered single-column groups below 480 px.
 - No horizontal overflow exists at either verified viewport.
 
 ### Colors and visual tokens
@@ -75,10 +77,12 @@ These crops were required because the navigation labels, hero controls, serif di
 - Border: `#ccc3ba`.
 - Accent: `#613403`.
 - The animated guilloché is rendered at 28% opacity, matching the Figma background treatment.
+- A 96 px alpha mask fades the hero pattern into the paper. The closing pattern uses the same fade at both edges.
 
 ### Image quality and asset fidelity
 
 - The Omnibudget logo, guilloché, disclosure arrow, and mobile menu icon are original supplied or Figma-exported assets.
+- All logo instances declare the SVG's native 300 × 67 aspect ratio and scale without distortion.
 - No visible source asset was redrawn with CSS, text glyphs, or a handcrafted replacement.
 - Figma's `Graphic here` labels denote unfinished asset slots. The implementation preserves the desktop space but does not expose placeholder text or invent illustrations.
 
@@ -92,6 +96,7 @@ These crops were required because the navigation labels, hero controls, serif di
 
 - The desktop navigation links scroll to real sections.
 - The mobile navigation opens, closes, reports `aria-expanded`, and retains a 44 px minimum target size.
+- The compact header logo is hidden and removed from keyboard navigation while the hero logo is visible. It becomes visible after the hero logo leaves the viewport.
 - The primary CTA and both entry buttons resolve to `/es/csv-import`.
 - The secondary hero CTA resolves to `#about`.
 - Decorative guilloché images are hidden from the accessibility tree.
@@ -111,6 +116,18 @@ These crops were required because the navigation labels, hero controls, serif di
 - No actionable P0, P1, or P2 differences remain.
 - The responsive mobile reflow, localized copy, omitted WIP placeholder labels, and shorter unused tail are intentional adaptations rather than design drift.
 
+### Pass 3 — browser annotation refinements
+
+- [P2] The hero and lower guilloché fields ended on hard horizontal seams instead of fading into the paper as shown in the source.
+- Fix: added 96 px alpha masks to the hero lower edge and both closing-field edges without changing the supplied SVG or its animation.
+- [P2] The compact header wordmark duplicated the large hero wordmark at the top of the page.
+- Fix: observed the hero logo with `IntersectionObserver`; the compact wordmark now remains visually and interactively hidden until the hero logo leaves the viewport.
+- [P3] The page had no concluding footer concept.
+- Fix: added a restrained footer that reuses the existing wordmark, typography, paper and ink tokens, navigation, CTA, and content rails.
+- [P3] The new footer exposed a runtime warning because earlier logo declarations did not use the SVG's exact intrinsic ratio.
+- Fix: normalized the hero, header, and footer logo dimensions to 300 × 67 and preserved responsive sizing with automatic height.
+- Post-fix evidence: live desktop and mobile full-page captures show soft pattern seams, correct header state, a responsive footer, and no horizontal overflow. A fresh verification tab reports no warnings or errors.
+
 ## Open questions
 
 - The Figma file does not contain a login screen. A dedicated authentication route is therefore not inferred in this pass.
@@ -122,6 +139,6 @@ These crops were required because the navigation labels, hero controls, serif di
 - TypeScript: passed.
 - Vitest: 262 tests passed across 7 files.
 - Next.js production build: passed.
-- Browser console: passed with no warnings or errors in a fresh tab.
+- Browser console: passed with no warnings or errors in a fresh post-fix tab.
 
 final result: passed
