@@ -2,6 +2,7 @@
   position: absolute;
   inset: 0;
   overflow: hidden;
+  opacity: 0.28;
   pointer-events: none;
   user-select: none;
 }
@@ -15,10 +16,21 @@
   height: auto;
 }
 
+.closing .artwork {
+  top: auto;
+  bottom: -22vw;
+  transform: rotate(180deg);
+}
+
 @media (max-aspect-ratio: 1 / 1) {
   .artwork {
     top: -55vw;
     right: -4vw;
     width: 300vw;
+  }
+
+  .closing .artwork {
+    top: auto;
+    bottom: -55vw;
   }
 }

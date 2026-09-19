@@ -9,10 +9,42 @@
       "openMenu": "Abrir el menú",
       "closeMenu": "Cerrar el menú",
       "features": "Funciones",
-      "pricing": "Precios",
+      "pricing": "Principios",
       "about": "Acerca de",
       "github": "GitHub",
       "enter": "Entrar a la plataforma"
+    },
+    "hero": {
+      "tagline": "El fin del caos financiero.",
+      "question": "¿Sabe adónde va su dinero?",
+      "learnMore": "Conozca más",
+      "enter": "Entrar a la plataforma"
+    },
+    "storyLabel": "Por qué existe Omnibudget",
+    "interlude": "...Es difícil saberlo cuando revisar implica abrir cinco aplicaciones bancarias.",
+    "sections": {
+      "open": {
+        "headingOne": "Simple como una aplicación.",
+        "headingTwo": "Abierto como una hoja de cálculo.",
+        "bodyOne": "Las hojas de cálculo son flexibles, pero requieren trabajo manual.",
+        "bodyTwo": "Las aplicaciones de presupuesto son cómodas, pero suelen ser cerradas.",
+        "bodyThree": "Omnibudget mantiene el presupuesto fácil de revisar y actualizar, sin quitarle el control.",
+        "emphasis": "Conserve el presupuesto. Elimine las tareas repetitivas."
+      },
+      "habits": {
+        "headingOne": "Un presupuesto NO debería",
+        "headingTwo": "exigir hábitos perfectos.",
+        "bodyOne": "Un presupuesto solo ayuda mientras está actualizado. Mantenerlo al día exige atención repetida: revisar qué cambió y recuperar el trabajo cuando la vida se ocupó. La economía del comportamiento tiene una palabra útil para esta <sludge>fricción</sludge>: pequeñas capas de esfuerzo que facilitan aplazar una buena acción.",
+        "bodyTwo": "Reducimos ese trabajo con sincronización bancaria, importación de archivos CSV, registro manual de excepciones, revisión de movimientos, detección de duplicados y alertas. La decisión final siempre queda en sus manos.",
+        "emphasis": "La automatización acerca el presupuesto a la realidad. Usted conserva la decisión final."
+      },
+      "control": {
+        "headingOne": "La comodidad NO debería",
+        "headingTwo": "significar dependencia.",
+        "bodyOne": "Muchas aplicaciones facilitan el presupuesto al reducir el sistema, las categorías, las reglas, las exportaciones y los límites. Eso puede funcionar al principio, hasta que sus finanzas necesitan algo que la aplicación no previó.",
+        "bodyTwo": "Omnibudget toma otra ruta. Ofrece sincronización, importaciones, revisión y alertas cuando ayudan, pero mantiene las salidas visibles. Puede registrar datos manualmente, importar archivos CSV, exportar su información y organizar un espacio de trabajo para su vida o negocio.",
+        "emphasis": "Queremos que la comodidad elimine trabajo, no opciones."
+      }
     }
   },
   "CsvImport": {

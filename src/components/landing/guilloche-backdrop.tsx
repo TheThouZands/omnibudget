@@ -2,9 +2,16 @@ import Image from "next/image";
 
 import styles from "./guilloche-backdrop.module.scss";
 
-export function GuillocheBackdrop() {
+type Props = {
+  placement?: "hero" | "closing";
+};
+
+export function GuillocheBackdrop({ placement = "hero" }: Props) {
   return (
-    <div className={styles.crop} aria-hidden="true">
+    <div
+      className={`${styles.crop} ${placement === "closing" ? styles.closing : ""}`}
+      aria-hidden="true"
+    >
       <Image
         src="/guilloche.svg"
         alt=""
