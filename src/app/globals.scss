@@ -1,9 +1,37 @@
 :root {
   --font-sans: var(--font-instrument-sans);
   --font-serif: var(--font-instrument-serif);
+  --color-paper: #f0e9e2;
+  --color-ink: #0a2010;
+  --color-border: #ccc3ba;
+  --color-accent: #613403;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  background: var(--color-paper);
 }
 
 body {
   margin: 0;
+  background: var(--color-paper);
+  color: var(--color-ink);
   font-family: var(--font-sans), system-ui, sans-serif;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
 }
