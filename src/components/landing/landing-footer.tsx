@@ -20,7 +20,7 @@ export function LandingFooter() {
       <div className={styles.rail}>
         <div className={styles.identity}>
           <a href="#top" aria-label={navigation("homeLabel")}>
-            <Image src="/omnibudget.svg" alt="Omnibudget" width={186} height={41} />
+            <Image src="/omnibudget.svg" alt="Omnibudget" width={300} height={67} />
           </a>
           <p>{t("description")}</p>
         </div>

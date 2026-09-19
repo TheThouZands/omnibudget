@@ -48,8 +48,8 @@ export function LandingHeader() {
         <Image
           src="/omnibudget.svg"
           alt="Omnibudget"
-          width={186}
-          height={41}
+          width={300}
+          height={67}
           priority
         />
       </a>

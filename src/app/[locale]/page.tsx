@@ -30,8 +30,8 @@ export default function Home() {
                 id="landing-hero-logo"
                 src="/omnibudget.svg"
                 alt="Omnibudget"
-                width={647}
-                height={145}
+                width={300}
+                height={67}
                 className={styles.heroLogo}
                 preload
               />
