@@ -3,6 +3,7 @@ import Image from "next/image";
 import { useTranslations } from "next-intl";
 
 import { GuillocheBackdrop } from "@/components/landing/guilloche-backdrop";
+import { LandingFooter } from "@/components/landing/landing-footer";
 import { LandingHeader } from "@/components/landing/landing-header";
 import { Link } from "@/i18n/navigation";
 
@@ -116,6 +117,7 @@ export default function Home() {
           <GuillocheBackdrop placement="closing" />
         </div>
       </main>
+      <LandingFooter />
     </>
   );
 }

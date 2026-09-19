@@ -14,6 +14,13 @@
       "github": "GitHub",
       "enter": "Entrar a la plataforma"
     },
+    "footer": {
+      "description": "Control financiero claro, portable y abierto.",
+      "navigationLabel": "Navegación del pie de página",
+      "actionPrompt": "Sus datos deben seguir bajo su control.",
+      "principle": "Menos tareas repetitivas. Más decisiones conscientes.",
+      "openSource": "Proyecto de código abierto"
+    },
     "hero": {
       "tagline": "El fin del caos financiero.",
       "question": "¿Sabe adónde va su dinero?",
