@@ -1,4 +1,25 @@
-.hero{
-  width: 50vw;
+.page {
+  position: relative;
+  min-height: 100svh;
+  overflow: hidden;
+  background: #f1ece5;
+  color: #12351d;
+  isolation: isolate;
+}
+
+.content {
+  position: relative;
+  z-index: 1;
+  padding: clamp(2rem, 5vw, 5rem);
+}
+
+.hero {
+  width: min(50vw, 647px);
   height: auto;
+}
+
+@media (max-width: 700px) {
+  .hero {
+    width: min(78vw, 647px);
+  }
 }

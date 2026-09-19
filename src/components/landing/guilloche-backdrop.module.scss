@@ -1,0 +1,24 @@
+.crop {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  user-select: none;
+}
+
+.artwork {
+  position: absolute;
+  top: -22vw;
+  right: -2vw;
+  width: 120vw;
+  max-width: none;
+  height: auto;
+}
+
+@media (max-aspect-ratio: 1 / 1) {
+  .artwork {
+    top: -55vw;
+    right: -4vw;
+    width: 300vw;
+  }
+}
