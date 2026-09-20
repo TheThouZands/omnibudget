@@ -29,6 +29,7 @@ const publicSupabasePublishableKey = readEnv(
 );
 
 const nextConfig: NextConfig = {
+  agentRules: false,
   env: {
     ...(publicSupabaseUrl
       ? { NEXT_PUBLIC_SUPABASE_URL: publicSupabaseUrl }
