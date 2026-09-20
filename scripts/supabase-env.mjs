@@ -161,6 +161,9 @@ const toAppEnv = ({ label, values }) => {
       SUPABASE_ANON_KEY: supabaseKey,
       DATABASE_URL: databaseUrl,
       POSTGRES_URL: databaseUrl,
+      OTP_STORE_MODE: "database",
+      OTP_DELIVERY_MODE: "emulated",
+      OTP_HASH_SECRET: "omnibudget-local-otp-hmac-secret-not-for-production",
     },
   };
 };
