@@ -54,6 +54,38 @@
       }
     }
   },
+  "Auth": {
+    "eyebrow": "Acceso por correo",
+    "backHome": "Volver al inicio",
+    "backHomeLabel": "Volver al inicio de Omnibudget",
+    "securityNote": "Sin contraseña. El acceso solo se concede después de verificar el código recibido por correo.",
+    "login": {
+      "title": "Entre a su espacio.",
+      "description": "Escriba su correo. Recibirá un código de un solo uso para continuar.",
+      "switchPrompt": "¿Es su primera vez?",
+      "switchAction": "Crear acceso"
+    },
+    "register": {
+      "title": "Cree su acceso.",
+      "description": "Verifique su correo con un código de un solo uso. No necesita crear una contraseña.",
+      "switchPrompt": "¿Ya tiene acceso?",
+      "switchAction": "Entrar"
+    },
+    "email": {
+      "label": "Correo electrónico",
+      "placeholder": "nombre@ejemplo.com",
+      "submit": "Enviar código"
+    },
+    "code": {
+      "title": "Revise su correo.",
+      "description": "Ingrese el código de seis dígitos que reciba en {email}.",
+      "label": "Código de acceso",
+      "hint": "Use los seis números del mensaje. El código será obligatorio para continuar.",
+      "submit": "Verificar y continuar",
+      "changeEmail": "Usar otro correo",
+      "serverRequired": "La verificación segura se completará cuando el servicio de acceso confirme este código."
+    }
+  },
   "CsvImport": {
     "title": "Preparar movimientos desde un archivo CSV (HU-ACC-03)",
     "metaDescription": "Revise un archivo CSV, asigne sus columnas y descargue los movimientos válidos sin guardarlos en una cuenta.",
