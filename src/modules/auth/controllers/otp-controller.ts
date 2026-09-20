@@ -1,5 +1,10 @@
 import { OtpError } from "../models/otp";
 import { loadOtpService } from "../server/otp-runtime";
+import {
+  readVerificationSessionCookie,
+  serializeVerificationSessionCookie,
+} from "../server/verification-session-cookie";
+import { loadVerificationSessionService } from "../server/verification-session-runtime";
 
 const MAX_REQUEST_BYTES = 4 * 1024;
 const PRIVATE_RESPONSE_HEADERS = {
@@ -10,6 +15,12 @@ const PRIVATE_RESPONSE_HEADERS = {
 
 type OtpService = Awaited<ReturnType<typeof loadOtpService>>;
 export type OtpServiceLoader = () => Promise<OtpService>;
+type VerificationSessionService = Awaited<
+  ReturnType<typeof loadVerificationSessionService>
+>;
+export type VerificationSessionServiceLoader = () => Promise<
+  VerificationSessionService
+>;
 
 class OtpRequestError extends Error {
   constructor(readonly status: number) {
@@ -129,6 +140,7 @@ export async function issueOtpRequest(
 export async function verifyOtpRequest(
   request: Request,
   loadService: OtpServiceLoader = loadOtpService,
+  loadSessions: VerificationSessionServiceLoader = loadVerificationSessionService,
 ) {
   try {
     const body = await readObject(request);
@@ -136,11 +148,25 @@ export async function verifyOtpRequest(
       body,
       ["challengeId", "email", "code"],
     );
-    await (await loadService()).verify(challengeId, email, code);
+    const verification = await (await loadService()).verify(
+      challengeId,
+      email,
+      code,
+    );
+    const session = await (await loadSessions()).issue({
+      otpChallengeId: verification.challengeId,
+      email: verification.email,
+      previousToken: readVerificationSessionCookie(request),
+    });
 
     return Response.json(
       { verified: true },
-      { headers: PRIVATE_RESPONSE_HEADERS },
+      {
+        headers: {
+          ...PRIVATE_RESPONSE_HEADERS,
+          "Set-Cookie": serializeVerificationSessionCookie(session),
+        },
+      },
     );
   } catch (error) {
     return failure(error);

@@ -1,11 +1,15 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { OtpError } from "../models/otp";
-import type { OtpServiceLoader } from "./otp-controller";
+import type {
+  OtpServiceLoader,
+  VerificationSessionServiceLoader,
+} from "./otp-controller";
 import { issueOtpRequest, verifyOtpRequest } from "./otp-controller";
 
 const CHALLENGE_ID = "018f5f9a-6ad7-7d2c-8d5b-7e9c4d3a2b10";
 const PRIVATE_MARKER = "private-request-marker";
+const SESSION_TOKEN = "A".repeat(43);
 type OtpService = Awaited<ReturnType<OtpServiceLoader>>;
 
 afterEach(() => {
@@ -27,6 +31,19 @@ function service(overrides?: {
       challengeId: CHALLENGE_ID,
       email: "person@example.com",
     })),
+  });
+}
+
+function sessions(
+  issue = vi.fn(async () => ({
+    token: SESSION_TOKEN,
+    expiresAt: new Date("2026-09-20T12:30:00.000Z"),
+  })),
+): VerificationSessionServiceLoader {
+  return async () => ({
+    issue,
+    find: vi.fn(async () => null),
+    revoke: vi.fn(async () => undefined),
   });
 }
 
@@ -82,23 +99,37 @@ describe("OTP verification endpoint", () => {
       challengeId: CHALLENGE_ID,
       email: "person@example.com",
     }));
+    const issue = vi.fn(async () => ({
+      token: SESSION_TOKEN,
+      expiresAt: new Date("2026-09-20T12:30:00.000Z"),
+    }));
     const response = await verifyOtpRequest(
       json("/api/auth/otp/verify", {
         challengeId: CHALLENGE_ID,
         email: "person@example.com",
         code: "042731",
-      }),
+      }, { Cookie: `ob_email_verification=${"B".repeat(43)}` }),
       service({ verify }),
+      sessions(issue),
     );
 
     expect(response.status).toBe(200);
     expectPrivate(response);
     expect(await response.json()).toEqual({ verified: true });
+    expect(response.headers.get("set-cookie")).toContain(
+      `ob_email_verification=${SESSION_TOKEN}`,
+    );
+    expect(response.headers.get("set-cookie")).toContain("HttpOnly");
     expect(verify).toHaveBeenCalledWith(
       CHALLENGE_ID,
       "person@example.com",
       "042731",
     );
+    expect(issue).toHaveBeenCalledWith({
+      otpChallengeId: CHALLENGE_ID,
+      email: "person@example.com",
+      previousToken: "B".repeat(43),
+    });
   });
 
   it("does not reveal why a code was rejected", async () => {
