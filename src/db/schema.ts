@@ -146,6 +146,36 @@ export const emailOtpChallenges = pgTable(
   ],
 ).enableRLS();
 
+export const emailVerificationSessions = pgTable(
+  "email_verification_sessions",
+  {
+    id: uuid("id").defaultRandom().primaryKey(),
+    otpChallengeId: uuid("otp_challenge_id")
+      .notNull()
+      .unique()
+      .references(() => emailOtpChallenges.id),
+    email: varchar("email", { length: 320 }).notNull(),
+    tokenDigest: varchar("token_digest", { length: 64 }).notNull().unique(),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .defaultNow()
+      .notNull(),
+    expiresAt: timestamp("expires_at", { withTimezone: true }).notNull(),
+    revokedAt: timestamp("revoked_at", { withTimezone: true }),
+  },
+  (table) => [
+    index("email_verification_sessions_email_idx").on(table.email),
+    index("email_verification_sessions_expires_at_idx").on(table.expiresAt),
+    check(
+      "email_verification_sessions_digest_length_check",
+      sql`char_length(${table.tokenDigest}) = 64`,
+    ),
+    check(
+      "email_verification_sessions_expiry_check",
+      sql`${table.expiresAt} > ${table.createdAt}`,
+    ),
+  ],
+).enableRLS();
+
 export const users = pgTable("users", {
   id: uuid("id").defaultRandom().primaryKey(),
   email: text("email").notNull().unique(),

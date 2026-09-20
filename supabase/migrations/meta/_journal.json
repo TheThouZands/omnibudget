@@ -15,6 +15,13 @@
       "when": 1789882062164,
       "tag": "20260920052742_email_otp_challenges",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1789943526388,
+      "tag": "20260920223206_email_verification_sessions",
+      "breakpoints": true
     }
   ]
 }
