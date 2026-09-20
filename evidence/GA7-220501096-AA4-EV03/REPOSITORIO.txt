@@ -1,0 +1,11 @@
+Repositorio Omnibudget
+
+URL: https://github.com/TheThouZands/omnibudget.git
+Evidencia: GA7-220501096-AA4-EV03
+Componente: página principal y navegación front-end
+Ruta principal: /es
+Versión entregada: 0.13.1
+Rama: main
+Commit de referencia de la implementación: 2e422b9
+
+El archivo comprimido contiene una copia completa del estado versionado usado para preparar la evidencia.
