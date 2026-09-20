@@ -1,0 +1,81 @@
+.dialog {
+  width: min(calc(100% - 32px), 520px);
+  max-width: none;
+  max-height: calc(100svh - 32px);
+  padding: 0;
+  border: 0;
+  overflow: visible;
+  background: transparent;
+  color: var(--color-ink);
+}
+
+.dialog::backdrop {
+  background: rgb(10 32 16 / 50%);
+  backdrop-filter: blur(4px);
+}
+
+.surface {
+  position: relative;
+  max-height: calc(100svh - 32px);
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+
+.closeButton {
+  position: absolute;
+  z-index: 2;
+  top: 14px;
+  right: 14px;
+  display: grid;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 0;
+  place-items: center;
+  background: transparent;
+  color: var(--color-ink);
+  cursor: pointer;
+}
+
+.closeButton span,
+.closeButton span::after {
+  display: block;
+  width: 18px;
+  height: 1px;
+  background: currentColor;
+  content: "";
+}
+
+.closeButton span {
+  transform: rotate(45deg);
+}
+
+.closeButton span::after {
+  transform: rotate(90deg);
+}
+
+.closeButton:hover {
+  color: var(--color-accent);
+}
+
+.closeButton:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: -4px;
+}
+
+@media (max-width: 520px) {
+  .dialog {
+    width: calc(100% - 16px);
+    max-height: calc(100svh - 16px);
+  }
+
+  .surface {
+    max-height: calc(100svh - 16px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dialog::backdrop {
+    backdrop-filter: none;
+  }
+}

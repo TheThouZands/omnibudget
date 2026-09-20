@@ -46,7 +46,7 @@ export default function Home() {
                   <Image src="/arrow-down.svg" alt="" width={10} height={6} />
                   <span>{t("hero.learnMore")}</span>
                 </a>
-                <Link className={`${styles.button} ${styles.primaryButton}`} href="/csv-import">
+                <Link className={`${styles.button} ${styles.primaryButton}`} href="/login">
                   {t("hero.enter")}
                 </Link>
               </div>

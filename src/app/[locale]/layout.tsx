@@ -26,6 +26,7 @@ export const metadata: Metadata = {
 
 type Props = {
   children: React.ReactNode;
+  auth: React.ReactNode;
   params: Promise<{ locale: string }>;
 };
 
@@ -33,7 +34,7 @@ export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
 }
 
-export default async function LocaleLayout({ children, params }: Props) {
+export default async function LocaleLayout({ children, auth, params }: Props) {
   const { locale } = await params;
 
   if (!hasLocale(routing.locales, locale)) {
@@ -41,10 +42,15 @@ export default async function LocaleLayout({ children, params }: Props) {
   }
 
   return (
-      <html lang={locale} className={`${instrumentSans.variable} ${instrumentSerif.variable}`}>
+      <html
+        lang={locale}
+        className={`${instrumentSans.variable} ${instrumentSerif.variable}`}
+        data-scroll-behavior="smooth"
+      >
         <body>
           <NextIntlClientProvider>
             {children}
+            {auth}
           </NextIntlClientProvider>
           <Analytics />
           <SpeedInsights />

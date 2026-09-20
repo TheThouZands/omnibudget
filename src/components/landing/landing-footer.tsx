@@ -38,7 +38,7 @@ export function LandingFooter() {
 
         <div className={styles.action}>
           <p>{t("actionPrompt")}</p>
-          <Link href="/csv-import">{navigation("enter")}</Link>
+          <Link href="/login">{navigation("enter")}</Link>
         </div>
       </div>
 

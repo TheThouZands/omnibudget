@@ -56,6 +56,8 @@
   },
   "Auth": {
     "eyebrow": "Acceso por correo",
+    "modalLabel": "Acceso a Omnibudget",
+    "close": "Cerrar acceso",
     "backHome": "Volver al inicio",
     "backHomeLabel": "Volver al inicio de Omnibudget",
     "securityNote": "Sin contraseña. El acceso solo se concede después de verificar el código recibido por correo.",

@@ -88,7 +88,7 @@ export function LandingHeader() {
         </div>
 
         <div className={styles.entryAction}>
-          <Link href="/csv-import" onClick={closeMenu}>
+          <Link href="/login" onClick={closeMenu}>
             {t("enter")}
           </Link>
         </div>
