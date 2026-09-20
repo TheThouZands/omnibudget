@@ -8,6 +8,13 @@
       "when": 1781499605059,
       "tag": "20260615063106_kb_core_model",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1789882062164,
+      "tag": "20260920052742_email_otp_challenges",
+      "breakpoints": true
     }
   ]
 }

@@ -6,6 +6,7 @@ import {
   check,
   date,
   index,
+  integer,
   jsonb,
   numeric,
   pgEnum,
@@ -109,6 +110,41 @@ export const notificationTypeEnum = pgEnum("notification_type", [
   "sync_error",
   "system_update",
 ]);
+
+export const emailOtpChallenges = pgTable(
+  "email_otp_challenges",
+  {
+    id: uuid("id").defaultRandom().primaryKey(),
+    email: varchar("email", { length: 320 }).notNull(),
+    codeDigest: varchar("code_digest", { length: 64 }).notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .defaultNow()
+      .notNull(),
+    expiresAt: timestamp("expires_at", { withTimezone: true }).notNull(),
+    consumedAt: timestamp("consumed_at", { withTimezone: true }),
+    attemptCount: integer("attempt_count").default(0).notNull(),
+    maxAttempts: integer("max_attempts").notNull(),
+  },
+  (table) => [
+    index("email_otp_challenges_email_created_idx").on(
+      table.email,
+      table.createdAt,
+    ),
+    index("email_otp_challenges_expires_at_idx").on(table.expiresAt),
+    check(
+      "email_otp_challenges_digest_length_check",
+      sql`char_length(${table.codeDigest}) = 64`,
+    ),
+    check(
+      "email_otp_challenges_attempts_check",
+      sql`${table.attemptCount} >= 0 and ${table.attemptCount} <= ${table.maxAttempts} and ${table.maxAttempts} > 0`,
+    ),
+    check(
+      "email_otp_challenges_expiry_check",
+      sql`${table.expiresAt} > ${table.createdAt}`,
+    ),
+  ],
+).enableRLS();
 
 export const users = pgTable("users", {
   id: uuid("id").defaultRandom().primaryKey(),
