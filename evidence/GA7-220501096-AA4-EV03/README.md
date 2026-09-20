@@ -2,9 +2,12 @@
 
 ## Componente front-end del proyecto formativo
 
-**Aprendiz:** Paulo Sánchez Contreras  
-**Ficha:** 3235889  
-**Proyecto:** Omnibudget  
+**Aprendiz:** Paulo Sánchez Contreras
+
+**Ficha:** 3235889
+
+**Proyecto:** Omnibudget
+
 **Versión:** 0.13.1
 
 Esta evidencia contiene la codificación del componente front-end principal de Omnibudget. El alcance incluye la página pública de presentación, la navegación adaptable, la composición editorial, el fondo guilloché animado y el pie de página. La interfaz está escrita en español y enlaza con el módulo funcional de preparación de movimientos desde archivos CSV.
