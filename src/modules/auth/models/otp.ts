@@ -73,5 +73,6 @@ export type OtpIssueResponse = {
 
 export type OtpVerification = {
   verified: true;
+  challengeId: string;
   email: string;
 };

@@ -24,6 +24,7 @@ function service(overrides?: {
     })),
     verify: overrides?.verify ?? vi.fn(async () => ({
       verified: true as const,
+      challengeId: CHALLENGE_ID,
       email: "person@example.com",
     })),
   });
@@ -78,6 +79,7 @@ describe("OTP verification endpoint", () => {
   it("accepts an exact verification request", async () => {
     const verify = vi.fn(async () => ({
       verified: true as const,
+      challengeId: CHALLENGE_ID,
       email: "person@example.com",
     }));
     const response = await verifyOtpRequest(

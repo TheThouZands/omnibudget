@@ -96,7 +96,11 @@ describe("OTP challenge service", () => {
     await service.issue("person@example.com");
 
     await expect(service.verify(CHALLENGE_ID, "PERSON@example.com", "042731"))
-      .resolves.toEqual({ verified: true, email: "person@example.com" });
+      .resolves.toEqual({
+        verified: true,
+        challengeId: CHALLENGE_ID,
+        email: "person@example.com",
+      });
     await expect(service.verify(CHALLENGE_ID, "person@example.com", "042731"))
       .rejects.toMatchObject({ code: "code_invalid_or_expired", status: 401 });
   });

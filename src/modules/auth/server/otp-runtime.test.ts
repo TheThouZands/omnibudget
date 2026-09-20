@@ -20,7 +20,11 @@ describe("OTP runtime modes", () => {
       issued.challengeId,
       email,
       issued.developmentCode!,
-    )).resolves.toEqual({ verified: true, email });
+    )).resolves.toEqual({
+      verified: true,
+      challengeId: issued.challengeId,
+      email,
+    });
   });
 
   it("does not allow emulated delivery or memory storage in production", async () => {

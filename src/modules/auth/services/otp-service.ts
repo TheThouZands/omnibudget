@@ -134,7 +134,7 @@ export function createOtpService({
         throw new OtpError("code_invalid_or_expired", 401);
       }
 
-      return { verified: true, email };
+      return { verified: true, challengeId, email };
     },
   };
 }
