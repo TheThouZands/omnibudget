@@ -27,8 +27,6 @@ Esta evidencia contiene la codificación del componente front-end principal de O
 La implementación parte de los artefactos del ciclo de software incluidos en el proyecto:
 
 - `KB.md`: alcance funcional, historias de usuario y reglas del producto.
-- `design-qa.md`: verificación visual contra el prototipo de Figma.
-- `design-qa/`: capturas y comparaciones de escritorio y móvil.
 - `src/app/[locale]/page.tsx`: composición semántica de la página.
 - `src/components/landing/`: componentes de navegación, fondo y pie de página.
 - `messages/es.json`: textos localizados de la interfaz.
