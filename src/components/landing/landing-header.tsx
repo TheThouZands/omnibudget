@@ -21,6 +21,7 @@ export function LandingHeader() {
   const closeMenu = () => setIsOpen(false);
 
   useEffect(() => {
+    // Show the compact wordmark only after the hero wordmark leaves the viewport.
     const heroLogo = document.getElementById("landing-hero-logo");
 
     if (!heroLogo) {

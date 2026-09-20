@@ -2,6 +2,7 @@
   position: absolute;
   inset: 0;
   overflow: hidden;
+  // Fade the supplied animated SVG into the paper without changing its paths.
   -webkit-mask-image: linear-gradient(
     to bottom,
     #000 0,
