@@ -5,14 +5,10 @@ import { useTranslations } from "next-intl";
 
 import { useRouter } from "@/i18n/navigation";
 
-import { AccessFlow, type AccessMode } from "./access-flow";
+import { AccessFlow } from "./access-flow";
 import styles from "./access-modal.module.scss";
 
-type AccessModalProps = {
-  mode: AccessMode;
-};
-
-export function AccessModal({ mode }: AccessModalProps) {
+export function AccessModal() {
   const t = useTranslations("Auth");
   const dialogRef = useRef<HTMLDialogElement>(null);
   const router = useRouter();
@@ -52,7 +48,7 @@ export function AccessModal({ mode }: AccessModalProps) {
         >
           <span aria-hidden="true" />
         </button>
-        <AccessFlow mode={mode} />
+        <AccessFlow />
       </div>
     </dialog>
   );

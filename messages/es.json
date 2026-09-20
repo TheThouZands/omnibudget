@@ -55,37 +55,24 @@
     }
   },
   "Auth": {
-    "eyebrow": "Acceso por correo",
     "modalLabel": "Acceso a Omnibudget",
     "close": "Cerrar acceso",
     "backHome": "Volver al inicio",
     "backHomeLabel": "Volver al inicio de Omnibudget",
-    "securityNote": "Sin contraseña. El acceso solo se concede después de verificar el código recibido por correo.",
-    "login": {
-      "title": "Entre a su espacio.",
-      "description": "Escriba su correo. Recibirá un código de un solo uso para continuar.",
-      "switchPrompt": "¿Es su primera vez?",
-      "switchAction": "Crear acceso"
-    },
-    "register": {
-      "title": "Cree su acceso.",
-      "description": "Verifique su correo con un código de un solo uso. No necesita crear una contraseña.",
-      "switchPrompt": "¿Ya tiene acceso?",
-      "switchAction": "Entrar"
-    },
     "email": {
+      "title": "Empecemos con su correo.",
+      "description": "Escriba su correo electrónico. Le enviaremos un código para continuar.",
       "label": "Correo electrónico",
       "placeholder": "nombre@ejemplo.com",
-      "submit": "Enviar código"
+      "submit": "Continuar"
     },
     "code": {
       "title": "Revise su correo.",
-      "description": "Ingrese el código de seis dígitos que reciba en {email}.",
-      "label": "Código de acceso",
-      "hint": "Use los seis números del mensaje. El código será obligatorio para continuar.",
-      "submit": "Verificar y continuar",
-      "changeEmail": "Usar otro correo",
-      "serverRequired": "La verificación segura se completará cuando el servicio de acceso confirme este código."
+      "description": "Escriba el código de seis dígitos que enviamos a {email}.",
+      "label": "Código de verificación",
+      "submit": "Continuar",
+      "changeEmail": "Cambiar correo",
+      "serverRequired": "No pudimos verificar el código. Revíselo e inténtelo de nuevo."
     }
   },
   "CsvImport": {

@@ -3,41 +3,17 @@
 import { type FormEvent, useId, useState } from "react";
 import { useTranslations } from "next-intl";
 
-import { Link } from "@/i18n/navigation";
-
 import styles from "./access-flow.module.scss";
-
-export type AccessMode = "login" | "register";
-
-type AccessFlowProps = {
-  mode: AccessMode;
-};
 
 type AccessStep = "email" | "code";
 
-export function AccessFlow({ mode }: AccessFlowProps) {
+export function AccessFlow() {
   const t = useTranslations("Auth");
   const headingId = useId();
   const [step, setStep] = useState<AccessStep>("email");
   const [email, setEmail] = useState("");
   const [code, setCode] = useState("");
   const [statusMessage, setStatusMessage] = useState("");
-
-  const modeCopy = mode === "login"
-    ? {
-        title: t("login.title"),
-        description: t("login.description"),
-        switchPrompt: t("login.switchPrompt"),
-        switchAction: t("login.switchAction"),
-        switchHref: "/registro" as const,
-      }
-    : {
-        title: t("register.title"),
-        description: t("register.description"),
-        switchPrompt: t("register.switchPrompt"),
-        switchAction: t("register.switchAction"),
-        switchHref: "/login" as const,
-      };
 
   function handleEmailSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -67,16 +43,11 @@ export function AccessFlow({ mode }: AccessFlowProps) {
 
   return (
     <section className={styles.panel} aria-labelledby={headingId}>
-      <div className={styles.eyebrow}>
-        <span aria-hidden="true" />
-        {t("eyebrow")}
-      </div>
-
       {step === "email" ? (
         <>
           <div className={styles.introduction}>
-            <h1 id={headingId}>{modeCopy.title}</h1>
-            <p>{modeCopy.description}</p>
+            <h1 id={headingId}>{t("email.title")}</h1>
+            <p>{t("email.description")}</p>
           </div>
 
           <form key="email-form" className={styles.form} onSubmit={handleEmailSubmit}>
@@ -119,13 +90,9 @@ export function AccessFlow({ mode }: AccessFlowProps) {
                 setCode(event.target.value.replace(/\D/g, "").slice(0, 6));
                 setStatusMessage("");
               }}
-              aria-describedby="access-code-hint"
               required
               autoFocus
             />
-            <p id="access-code-hint" className={styles.fieldHint}>
-              {t("code.hint")}
-            </p>
             <button type="submit">{t("code.submit")}</button>
           </form>
 
@@ -138,13 +105,6 @@ export function AccessFlow({ mode }: AccessFlowProps) {
           </p>
         </>
       )}
-
-      <p className={styles.securityNote}>{t("securityNote")}</p>
-
-      <div className={styles.modeSwitch}>
-        <span>{modeCopy.switchPrompt}</span>
-        <Link href={modeCopy.switchHref}>{modeCopy.switchAction}</Link>
-      </div>
     </section>
   );
 }

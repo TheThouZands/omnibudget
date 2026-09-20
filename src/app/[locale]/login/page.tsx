@@ -3,10 +3,10 @@ import type { Metadata } from "next";
 import { AccessPage } from "@/components/auth/access-page";
 
 export const metadata: Metadata = {
-  title: "Entrar | Omnibudget",
-  description: "Solicite un código de acceso de un solo uso para entrar a Omnibudget.",
+  title: "Acceso | Omnibudget",
+  description: "Continúe en Omnibudget con su correo electrónico.",
 };
 
 export default function LoginPage() {
-  return <AccessPage mode="login" />;
+  return <AccessPage />;
 }
