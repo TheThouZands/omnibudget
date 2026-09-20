@@ -7,30 +7,6 @@
   box-shadow: 0 28px 90px rgb(10 32 16 / 12%);
 }
 
-.panel::before,
-.panel::after {
-  position: absolute;
-  width: 24px;
-  height: 24px;
-  border-color: var(--color-accent);
-  content: "";
-  pointer-events: none;
-}
-
-.panel::before {
-  top: 12px;
-  left: 12px;
-  border-top: 1px solid;
-  border-left: 1px solid;
-}
-
-.panel::after {
-  right: 12px;
-  bottom: 12px;
-  border-right: 1px solid;
-  border-bottom: 1px solid;
-}
-
 .introduction h1 {
   margin: 0;
   font-family: var(--font-serif), serif;
