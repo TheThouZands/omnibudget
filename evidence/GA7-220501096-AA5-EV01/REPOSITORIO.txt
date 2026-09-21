@@ -1,0 +1,16 @@
+Repositorio Omnibudget
+
+URL: https://github.com/TheThouZands/omnibudget.git
+Versión pública: https://omnibudget.co
+Evidencia: GA7-220501096-AA5-EV01
+Actividad: Diseño y desarrollo de servicios web - caso
+Componente: registro, inicio y cierre de sesión
+Aprendiz: Paulo Sánchez Contreras
+Ficha: 3235889
+Versión entregada: 0.33.0
+Rama: main
+Commit de referencia del código: 7e9532ba8eee70f600597e1ac92ea22dc90833cf
+
+El paquete contiene una copia del código de referencia y las notas de esta evidencia.
+Las instrucciones de la actividad están en evidence/GA7-220501096-AA5-EV01/README.md.
+El README principal contiene la configuración y los pasos de ejecución del proyecto.
