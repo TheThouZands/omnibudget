@@ -4,14 +4,14 @@ Omnibudget is a Next.js presentation app backed by Supabase/Postgres. Domain mod
 
 ## Independent CSV module
 
-The CSV statement preparation module runs without a database, Supabase credentials, a user account, or an Express service. It reads a file, validates its rows, flags possible duplicates within that file, and exports the selected valid rows.
+The CSV statement preparation engine runs without a database or an Express service. Its page and API endpoints require an account session. It reads a file, validates its rows, flags possible duplicates within that file, and exports the selected valid rows.
 
 ```sh
 npm ci
 npm run dev
 ```
 
-Open [http://localhost:3000/es/csv-import](http://localhost:3000/es/csv-import). Choose **Usar ejemplo ficticio** to try the module without sending personal data. The Spanish interface uses native HTML controls and has no module-specific styles.
+Open [http://localhost:3000/es/csv-import](http://localhost:3000/es/csv-import) and complete the access flow. Development emulates email delivery and shows the OTP in the form. New addresses create an account; existing accounts require their password. Then choose **Usar ejemplo ficticio** to try the CSV module without sending personal data. The Spanish CSV interface uses native HTML controls and has no module-specific styles.
 
 The backend is in `src/modules/csv-import`. Next.js routes only adapt HTTP requests; the temporary frontend imports backend contracts as types and calls the API. See the [Spanish module guide](docs/modules/csv-import.md) and the [GA7-220501096-AA3-EV01 delivery notes](evidence/GA7-220501096-AA3-EV01/README.md).
 
@@ -23,6 +23,8 @@ npm run typecheck
 ```
 
 The database workflow below applies to the application's database-backed features.
+
+Account access uses Better Auth, Drizzle, and Argon2id. Production requires a separate `BETTER_AUTH_SECRET` of at least 32 random characters. See the [account access guide](docs/modules/account-access.md) for persistence, OTP gating, profile fields, and local testing. Development defaults to process-local accounts; use an isolated database and stable secrets to test persistence across server restarts.
 
 ## Development
 

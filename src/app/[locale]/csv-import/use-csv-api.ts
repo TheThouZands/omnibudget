@@ -53,7 +53,7 @@ async function postCsv(
     body,
     signal,
     cache: "no-store",
-    credentials: "omit",
+    credentials: "same-origin",
   });
   await requireSuccess(response);
   return response;

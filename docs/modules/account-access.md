@@ -25,6 +25,8 @@ El almacenamiento de cuentas sigue el modo de la sesión de verificación (`VERI
 
 Para comprobar persistencia durante reinicios, use Supabase local o una rama de prueba, configure el modo `database` y mantenga estables los secretos. `npm run dev:local`, seguido de `npm run db:migrate`, permite preparar el entorno con Docker. No apunte las pruebas a la base de producción.
 
-Producción requiere la migración `20260921052157_account_sessions.sql` y `BETTER_AUTH_SECRET`, con al menos 32 caracteres aleatorios. Use un secreto distinto de los secretos de OTP y de verificación. `BETTER_AUTH_URL` permite indicar el origen canónico. Cambiar el secreto invalida las cookies de acceso existentes.
+Producción requiere las migraciones `20260921052157_account_sessions.sql` y `20260921053505_auth_adapter_models.sql`, además de `BETTER_AUTH_SECRET`, con al menos 32 caracteres aleatorios. Use un secreto distinto de los secretos de OTP y de verificación. `BETTER_AUTH_URL` permite indicar el origen canónico. Cambiar el secreto invalida las cookies de acceso existentes.
+
+Los formularios conservan identificadores y nombres estables. El correo verificado es de solo lectura y usa `autocomplete="username"`; la contraseña usa `current-password` al entrar y `new-password` al registrarse. El nombre visible usa `nickname`, el país usa `country` y el teléfono usa `tel`. Esto facilita el reconocimiento por navegadores y gestores de contraseñas, sin depender de una extensión específica.
 
 Las tablas tienen RLS activo. El servidor accede con la conexión PostgreSQL privada. Las credenciales de Supabase para el navegador no conceden acceso a las sesiones.

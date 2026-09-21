@@ -12,16 +12,17 @@ beforeEach(() => {
   handlers.session.mockReset().mockImplementation(async (_request, response) => response);
 });
 
-describe("public CSV route", () => {
+describe("locale routing without a separate Supabase Auth session", () => {
   it.each(["/csv-import", "/csv-import/", "/es/csv-import", "/es/csv-import/"])("does not contact auth for %s", async (path) => {
     const response = await proxy(new NextRequest(`http://localhost${path}`));
     expect(response).toBe(handlers.locale.mock.results[0].value);
     expect(handlers.session).not.toHaveBeenCalled();
   });
 
-  it.each(["/es", "/es/private", "/es/csv-import/nested", "/csv-import-extra", "/en/csv-import"])("preserves existing session handling for %s", async (path) => {
+  it.each(["/es", "/es/private", "/es/csv-import/nested", "/csv-import-extra", "/en/csv-import"])("leaves account authorization to the page or API for %s", async (path) => {
     const request = new NextRequest(`http://localhost${path}`);
     await proxy(request);
-    expect(handlers.session).toHaveBeenCalledWith(request, handlers.locale.mock.results[0].value);
+    expect(handlers.locale).toHaveBeenCalledWith(request);
+    expect(handlers.session).not.toHaveBeenCalled();
   });
 });

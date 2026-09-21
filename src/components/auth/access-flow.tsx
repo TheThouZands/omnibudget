@@ -3,6 +3,7 @@
 import {
   type FormEvent,
   useEffect,
+  useCallback,
   useId,
   useRef,
   useState,
@@ -17,15 +18,17 @@ import {
 } from "@/modules/auth/client/otp-client";
 
 import styles from "./access-flow.module.scss";
+import { AccountForm } from "./account-form";
+import { AccountClientError, readAccessStatus, type AccessStatus } from "@/modules/auth/client/account-client";
 
-type AccessStep = "email" | "code";
+type AccessStep = "loading" | "email" | "code" | "login" | "register";
 type RequestStage = AccessStep | null;
 
 export function AccessFlow() {
   const t = useTranslations("Auth");
   const router = useRouter();
   const headingId = useId();
-  const [step, setStep] = useState<AccessStep>("email");
+  const [step, setStep] = useState<AccessStep>("loading");
   const [email, setEmail] = useState("");
   const [code, setCode] = useState("");
   const [challengeId, setChallengeId] = useState("");
@@ -34,10 +37,22 @@ export function AccessFlow() {
   const activeRequest = useRef<AbortController | null>(null);
   const busy = pending !== null;
 
-  useEffect(() => () => activeRequest.current?.abort(), []);
+  const applyStatus = useCallback((status: AccessStatus) => {
+    if (status.step === "authenticated") { router.replace("/csv-import"); return; }
+    if ("email" in status) setEmail(status.email);
+    setStep(status.step);
+  }, [router]);
+
+  useEffect(() => {
+    const request = new AbortController();
+    readAccessStatus(request.signal).then(applyStatus).catch(() => {
+      if (!request.signal.aborted) setStep("email");
+    });
+    return () => { request.abort(); activeRequest.current?.abort(); };
+  }, [applyStatus]);
 
   function requestErrorMessage(error: unknown) {
-    if (error instanceof OtpClientError && t.has(`errors.${error.code}`)) {
+    if ((error instanceof OtpClientError || error instanceof AccountClientError) && t.has(`errors.${error.code}`)) {
       return t(`errors.${error.code}`);
     }
 
@@ -115,11 +130,12 @@ export function AccessFlow() {
 
     const verified = await runRequest("code", async (signal) => {
       await verifyOtp(challengeId, email, code, signal);
-      return true;
+      return readAccessStatus(signal);
     });
 
     if (verified) {
-      router.replace("/csv-import");
+      setCode("");
+      applyStatus(verified);
     }
   }
 
@@ -132,7 +148,9 @@ export function AccessFlow() {
 
   return (
     <section className={styles.panel} aria-labelledby={headingId}>
-      {step === "email" ? (
+      {step === "loading" ? <p id={headingId} role="status">{t("account.loading")}</p> : step === "login" || step === "register" ? (
+        <AccountForm key={`${step}:${email}`} step={step} email={email} headingId={headingId} onSuccess={() => router.replace("/csv-import")} onChangeEmail={returnToEmail} />
+      ) : step === "email" ? (
         <>
           <div className={styles.introduction}>
             <h1 id={headingId}>{t("email.title")}</h1>
@@ -146,7 +164,9 @@ export function AccessFlow() {
               name="email"
               type="email"
               inputMode="email"
-              autoComplete="email"
+              autoComplete="username"
+              autoCapitalize="none"
+              spellCheck={false}
               placeholder={t("email.placeholder")}
               defaultValue={email}
               disabled={busy}

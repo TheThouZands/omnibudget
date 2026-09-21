@@ -76,7 +76,37 @@
       "changeEmail": "Cambiar correo",
       "developmentCode": "Prueba local: use el código {code}."
     },
+    "account": {
+      "loading": "Preparando el acceso…",
+      "password": "Contraseña",
+      "pending": "Continuando…",
+      "logout": "Cerrar sesión"
+    },
+    "login": {
+      "title": "Qué gusto verle de nuevo.",
+      "description": "Escriba su contraseña para continuar.",
+      "submit": "Entrar"
+    },
+    "register": {
+      "title": "Hagámoslo suyo.",
+      "description": "Complete estos datos para crear su cuenta.",
+      "username": "Nombre o apodo",
+      "passwordHelp": "Use entre 12 y 128 caracteres. Puede incluir espacios.",
+      "workspaceName": "Nombre de su espacio de trabajo",
+      "country": "País (opcional)",
+      "chooseCountry": "Seleccionar país",
+      "phone": "Teléfono (opcional)",
+      "phoneHelp": "Sin un país seleccionado, incluya el prefijo internacional, como +57.",
+      "submit": "Crear cuenta"
+    },
     "errors": {
+      "email_verification_required": "Vuelva a verificar su correo. Puede hacerlo desde «Cambiar correo».",
+      "too_many_attempts": "Se alcanzó el límite de intentos. Use «Cambiar correo» para verificarlo de nuevo.",
+      "invalid_credentials": "La contraseña no coincide. Revísela e inténtelo de nuevo.",
+      "account_exists": "Ya existe una cuenta con este correo. Recargue la página para entrar.",
+      "invalid_input": "Revise los datos del formulario e inténtelo de nuevo.",
+      "invalid_phone": "Revise el teléfono y su prefijo internacional.",
+      "invalid_origin": "No pudimos validar la solicitud. Recargue la página e inténtelo de nuevo.",
       "invalid_request": "Revise la información e inténtelo de nuevo.",
       "rate_limited": "Espere un momento antes de solicitar otro código.",
       "delivery_failed": "No pudimos enviar el código. Inténtelo de nuevo.",
@@ -205,6 +235,7 @@
       "empty_selection": "Seleccione al menos una fila válida para descargar.",
       "invalid_format": "Seleccione CSV o JSON como formato de descarga.",
       "processing_failed": "El servidor no pudo procesar la solicitud. Inténtelo de nuevo.",
+      "authentication_required": "Su sesión terminó. Recargue la página para entrar de nuevo.",
       "empty_file": "El archivo está vacío.",
       "no_data_rows": "El archivo tiene encabezados, pero no tiene filas de datos.",
       "too_many_rows": "El archivo supera el límite de 5000 filas de datos.",

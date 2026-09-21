@@ -34,7 +34,8 @@
   font-weight: 650;
 }
 
-.form input {
+.form input,
+.form select {
   width: 100%;
   min-height: 52px;
   padding: 12px 14px;
@@ -49,9 +50,20 @@
   color: color-mix(in srgb, var(--color-ink) 48%, transparent);
 }
 
-.form input:focus-visible {
+.form input:focus-visible,
+.form select:focus-visible {
   border-color: var(--color-accent);
   box-shadow: 0 0 0 2px color-mix(in srgb, var(--color-accent) 18%, transparent);
+}
+
+.form input[readonly] {
+  background: color-mix(in srgb, var(--color-ink) 4%, transparent);
+}
+
+.fieldHelp {
+  margin: -4px 0 8px;
+  font-size: 12px;
+  line-height: 1.5;
 }
 
 .form button {
