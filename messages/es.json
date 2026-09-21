@@ -77,7 +77,6 @@
       "developmentCode": "Prueba local: use el código {code}."
     },
     "account": {
-      "loading": "Preparando el acceso…",
       "password": "Contraseña",
       "pending": "Continuando…",
       "logout": "Cerrar sesión"

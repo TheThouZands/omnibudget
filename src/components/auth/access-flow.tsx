@@ -21,14 +21,15 @@ import styles from "./access-flow.module.scss";
 import { AccountForm } from "./account-form";
 import { AccountClientError, readAccessStatus, type AccessStatus } from "@/modules/auth/client/account-client";
 
-type AccessStep = "loading" | "email" | "code" | "login" | "register";
+type AccessStep = "email" | "code" | "login" | "register";
 type RequestStage = AccessStep | null;
 
 export function AccessFlow() {
   const t = useTranslations("Auth");
   const router = useRouter();
   const headingId = useId();
-  const [step, setStep] = useState<AccessStep>("loading");
+  const [step, setStep] = useState<AccessStep>("email");
+  const [checkingAccess, setCheckingAccess] = useState(true);
   const [email, setEmail] = useState("");
   const [code, setCode] = useState("");
   const [challengeId, setChallengeId] = useState("");
@@ -45,9 +46,16 @@ export function AccessFlow() {
 
   useEffect(() => {
     const request = new AbortController();
-    readAccessStatus(request.signal).then(applyStatus).catch(() => {
-      if (!request.signal.aborted) setStep("email");
-    });
+    readAccessStatus(request.signal)
+      .then((status) => {
+        if (!request.signal.aborted) applyStatus(status);
+      })
+      .catch(() => {
+        // The email flow remains available if the session check fails.
+      })
+      .finally(() => {
+        if (!request.signal.aborted) setCheckingAccess(false);
+      });
     return () => { request.abort(); activeRequest.current?.abort(); };
   }, [applyStatus]);
 
@@ -94,6 +102,7 @@ export function AccessFlow() {
 
   async function handleEmailSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (checkingAccess || busy) return;
 
     const submittedEmail = new FormData(event.currentTarget).get("email");
 
@@ -148,7 +157,7 @@ export function AccessFlow() {
 
   return (
     <section className={styles.panel} aria-labelledby={headingId}>
-      {step === "loading" ? <p id={headingId} role="status">{t("account.loading")}</p> : step === "login" || step === "register" ? (
+      {step === "login" || step === "register" ? (
         <AccountForm key={`${step}:${email}`} step={step} email={email} headingId={headingId} onSuccess={() => router.replace("/csv-import")} onChangeEmail={returnToEmail} />
       ) : step === "email" ? (
         <>
@@ -173,7 +182,7 @@ export function AccessFlow() {
               required
               autoFocus
             />
-            <button type="submit" disabled={busy}>
+            <button type="submit" disabled={busy || checkingAccess}>
               {pending === "email" ? t("email.pending") : t("email.submit")}
             </button>
           </form>
