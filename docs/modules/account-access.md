@@ -12,6 +12,8 @@ El acceso usa Better Auth, su adaptador Drizzle y Argon2id, como el proyecto `po
 
 La verificación inicial mantiene su límite de 30 minutos. Otro navegador necesita su propio OTP. Una recarga conserva tanto la autorización inicial como la sesión de acceso mientras sigan vigentes. Las contraseñas y los tokens no se guardan en el almacenamiento del navegador ni se incluyen en las respuestas JSON.
 
+El correo OTP usa una [plantilla del repositorio](../../src/emails/README.md), con HTML y texto plano. Sus estilos se insertan en el mensaje; no depende de imágenes ni fuentes externas. El envío conserva la configuración SMTP y la emulación de desarrollo existentes. El campo del código usa `autocomplete="one-time-code"`; las sugerencias y las acciones para copiar dependen del sistema y de la aplicación de correo.
+
 ## Datos de registro
 
 - El nombre de usuario es un nombre visible o apodo. No es un identificador único; el correo identifica la cuenta.

@@ -47,10 +47,31 @@ describe("SMTP OTP sender", () => {
       to: "person@example.com",
       subject: "Su código de acceso a Omnibudget",
       text: expect.stringContaining("042731"),
+      html: expect.stringMatching(/<p dir="ltr"[^>]*>042731<\/p>/),
     }));
     expect(mail.sendMail).toHaveBeenCalledWith(expect.objectContaining({
       text: expect.stringContaining("hora de Colombia"),
+      html: expect.stringContaining("hora de Colombia"),
     }));
     expect(result).toEqual({});
+  });
+
+  it("propagates SMTP errors so the OTP service can revoke the challenge", async () => {
+    const failure = new Error("SMTP unavailable");
+    mail.sendMail.mockRejectedValueOnce(failure);
+    const sender = createSmtpOtpSender({
+      host: "mail.example.com",
+      port: 465,
+      secure: true,
+      user: "access@example.com",
+      password: "private-app-password",
+      from: "Omnibudget <access@example.com>",
+    });
+
+    await expect(sender.send({
+      to: "person@example.com",
+      code: "042731",
+      expiresAt: new Date("2026-09-20T17:10:00.000Z"),
+    })).rejects.toBe(failure);
   });
 });
