@@ -40,13 +40,15 @@ describe("verification code email", () => {
     expect(email.html).toContain("Vence en 1 minuto.");
   });
 
-  it("uses self-contained inline styles without scripts, links or remote assets", () => {
+  it("uses inline styles and embedded images without scripts, links or remote assets", () => {
     const { html } = renderVerificationCodeEmail(example);
 
     expect(html).toContain('<html lang="es"');
     expect(html).toContain('role="presentation"');
     expect(html).toContain('style="');
-    expect(html).not.toMatch(/<(script|style|link|img|svg|form|a)\b|https?:\/\/|url\(/i);
+    expect(html).not.toMatch(/<(script|style|link|svg|form|a)\b|https?:\/\/|data:image/i);
+    expect(html).toContain('src="cid:logo@omnibudget.invalid"');
+    expect(html).toContain('background="cid:guilloche@omnibudget.invalid"');
     expect(Buffer.byteLength(html, "utf8")).toBeLessThan(10_000);
   });
 
@@ -60,10 +62,15 @@ describe("verification code email", () => {
     const message = result.message.toString("utf8");
 
     expect(message).toContain("Content-Type: multipart/alternative;");
+    expect(message).toContain("Content-Type: multipart/related;");
     expect(message).toContain("Content-Type: text/plain; charset=utf-8");
     expect(message).toContain("Content-Type: text/html; charset=utf-8");
     expect(message).toContain(example.code);
     expect(message).not.toContain("Content-Disposition: attachment");
+    expect(message.match(/Content-Type: image\/png;/g)).toHaveLength(2);
+    expect(message).toContain("Content-ID: <logo@omnibudget.invalid>");
+    expect(message).toContain("Content-ID: <guilloche@omnibudget.invalid>");
+    expect(Buffer.byteLength(message)).toBeLessThan(150_000);
   });
 
   it.each(["", "12345", "1234567", "123 45", "abcdef", "<img src=x>", "１２３４５６"])(

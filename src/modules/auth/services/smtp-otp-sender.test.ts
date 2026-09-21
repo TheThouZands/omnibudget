@@ -48,6 +48,10 @@ describe("SMTP OTP sender", () => {
       subject: "Su código de acceso a Omnibudget",
       text: expect.stringContaining("042731"),
       html: expect.stringMatching(/<p dir="ltr"[^>]*>042731<\/p>/),
+      attachments: expect.arrayContaining([
+        expect.objectContaining({ cid: "logo@omnibudget.invalid", contentType: "image/png" }),
+        expect.objectContaining({ cid: "guilloche@omnibudget.invalid", contentType: "image/png" }),
+      ]),
     }));
     expect(mail.sendMail).toHaveBeenCalledWith(expect.objectContaining({
       text: expect.stringContaining("Vence en 10 minutos."),

@@ -1,9 +1,11 @@
+import { emailImageIds, type InlineEmailImage } from "./assets";
 import { emailStyles as styles } from "./styles";
 
 export type RenderedEmail = {
   subject: string;
   text: string;
   html: string;
+  attachments: InlineEmailImage[];
 };
 
 export function escapeEmailHtml(value: string): string {
@@ -39,10 +41,10 @@ export function renderEmailLayout({
       <tr>
         <td align="center" style="${styles.page}">
           <!--[if mso]><table role="presentation" width="520" cellpadding="0" cellspacing="0" border="0"><tr><td><![endif]-->
-          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="${styles.table}${styles.card}">
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" background="cid:${emailImageIds.guilloche}" style="${styles.table}${styles.card}background-image:url('cid:${emailImageIds.guilloche}');">
             <tr>
               <td style="${styles.content}">
-                <p style="${styles.brand}">OmniBudget</p>
+                <p style="${styles.brand}"><img src="cid:${emailImageIds.logo}" width="220" height="49" alt="OmniBudget" style="${styles.logo}"></p>
                 ${contentHtml}
               </td>
             </tr>

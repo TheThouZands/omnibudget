@@ -1,3 +1,4 @@
+import { createEmailImages } from "./assets";
 import { escapeEmailHtml, renderEmailLayout, type RenderedEmail } from "./layout";
 import { emailStyles as styles } from "./styles";
 
@@ -19,6 +20,7 @@ export function renderVerificationCodeEmail({
 
   return {
     subject,
+    attachments: createEmailImages(),
     text: [preview, "", expiry, "", unsolicited].join("\n"),
     html: renderEmailLayout({
       title: subject,

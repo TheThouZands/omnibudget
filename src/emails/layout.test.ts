@@ -18,7 +18,7 @@ describe("email layout", () => {
 
     expect(html).toContain("&lt;script&gt;unexpected()&lt;/script&gt;");
     expect(html).toContain("&lt;img src=x onerror=unexpected()&gt;");
-    expect(html).not.toMatch(/<(script|img)\b/);
+    expect(html).not.toMatch(/<script\b|<img src=x/);
     expect(html).toContain("<h1>Contenido de la plantilla</h1>");
   });
 });
