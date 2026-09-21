@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import { useTranslations } from "next-intl";
+import { getTranslations } from "next-intl/server";
 
 import { GuillocheBackdrop } from "@/components/landing/guilloche-backdrop";
 import { LandingFooter } from "@/components/landing/landing-footer";
 import { LandingHeader } from "@/components/landing/landing-header";
 import { Link } from "@/i18n/navigation";
+import { getCurrentAccountSession } from "@/modules/auth/server/current-session";
 
 import styles from "./page.module.scss";
 
@@ -15,12 +16,17 @@ export const metadata: Metadata = {
     "Revise, importe y mantenga su presupuesto actualizado sin perder el control de sus datos.",
 };
 
-export default function Home() {
-  const t = useTranslations("Landing");
+export default async function Home() {
+  const [t, session] = await Promise.all([
+    getTranslations("Landing"),
+    getCurrentAccountSession(),
+  ]);
+  const isAuthenticated = Boolean(session);
+  const entryHref = isAuthenticated ? "/csv-import" : "/login";
 
   return (
     <>
-      <LandingHeader />
+      <LandingHeader isAuthenticated={isAuthenticated} />
       <main id="top" className={styles.page}>
         <section className={styles.hero} aria-labelledby="landing-title">
           <GuillocheBackdrop />
@@ -46,7 +52,7 @@ export default function Home() {
                   <Image src="/arrow-down.svg" alt="" width={10} height={6} />
                   <span>{t("hero.learnMore")}</span>
                 </a>
-                <Link className={`${styles.button} ${styles.primaryButton}`} href="/login">
+                <Link className={`${styles.button} ${styles.primaryButton}`} href={entryHref} prefetch={false}>
                   {t("hero.enter")}
                 </Link>
               </div>
@@ -117,7 +123,7 @@ export default function Home() {
           <GuillocheBackdrop placement="closing" />
         </div>
       </main>
-      <LandingFooter />
+      <LandingFooter entryHref={entryHref} />
     </>
   );
 }

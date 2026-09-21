@@ -1,13 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { useTranslations } from "next-intl";
-import { useRouter } from "@/i18n/navigation";
+import { useLocale, useTranslations } from "next-intl";
+import { getPathname } from "@/i18n/navigation";
 import { accountRequest } from "@/modules/auth/client/account-client";
 
-export function LogoutButton() {
+export function LogoutButton({ className }: { className?: string }) {
   const t = useTranslations("Auth");
-  const router = useRouter();
+  const locale = useLocale();
   const [busy, setBusy] = useState(false);
   const [failed, setFailed] = useState(false);
   async function logout() {
@@ -15,8 +15,8 @@ export function LogoutButton() {
     setFailed(false);
     try {
       await accountRequest("logout", "POST");
-      router.replace("/");
-      router.refresh();
+      // Discard authenticated router state after the server revokes the session.
+      window.location.replace(getPathname({ href: "/", locale }));
     } catch {
       setFailed(true);
       setBusy(false);
@@ -24,7 +24,7 @@ export function LogoutButton() {
   }
   return (
     <>
-      <button type="button" onClick={logout} disabled={busy}>
+      <button className={className} type="button" onClick={logout} disabled={busy} aria-busy={busy}>
         {t("account.logout")}
       </button>
       {failed && <p role="alert">{t("errors.request_failed")}</p>}

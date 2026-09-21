@@ -11,7 +11,7 @@ const navigationItems = [
   { key: "about", href: "#about" },
 ] as const;
 
-export function LandingFooter() {
+export function LandingFooter({ entryHref }: { entryHref: "/login" | "/csv-import" }) {
   const t = useTranslations("Landing.footer");
   const navigation = useTranslations("Landing.navigation");
 
@@ -38,7 +38,7 @@ export function LandingFooter() {
 
         <div className={styles.action}>
           <p>{t("actionPrompt")}</p>
-          <Link href="/login">{navigation("enter")}</Link>
+          <Link href={entryHref} prefetch={false}>{navigation("enter")}</Link>
         </div>
       </div>
 

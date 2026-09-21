@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 
 import { Link } from "@/i18n/navigation";
+import { LogoutButton } from "@/components/auth/logout-button";
 
 import styles from "./landing-header.module.scss";
 
@@ -14,7 +15,7 @@ const navigationItems = [
   { key: "about", href: "#about" },
 ] as const;
 
-export function LandingHeader() {
+export function LandingHeader({ isAuthenticated }: { isAuthenticated: boolean }) {
   const t = useTranslations("Landing.navigation");
   const [isOpen, setIsOpen] = useState(false);
   const [isBrandVisible, setIsBrandVisible] = useState(false);
@@ -88,9 +89,10 @@ export function LandingHeader() {
         </div>
 
         <div className={styles.entryAction}>
-          <Link href="/login" onClick={closeMenu}>
+          <Link href={isAuthenticated ? "/csv-import" : "/login"} prefetch={false} onClick={closeMenu}>
             {t("enter")}
           </Link>
+          {isAuthenticated && <LogoutButton className={styles.logoutButton} />}
         </div>
       </nav>
     </header>
