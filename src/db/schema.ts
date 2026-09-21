@@ -179,6 +179,14 @@ export const emailVerificationSessions = pgTable(
 export const users = pgTable("users", {
   id: uuid("id").defaultRandom().primaryKey(),
   email: text("email").notNull().unique(),
+  name: text("name").default("").notNull(),
+  emailVerified: boolean("email_verified").default(false).notNull(),
+  image: text("image"),
+  country: varchar("country", { length: 2 }),
+  phone: varchar("phone", { length: 16 }),
+  phoneVerified: boolean("phone_verified").default(false).notNull(),
+  defaultWorkspaceName: text("default_workspace_name"),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
   passwordHash: text("password_hash").notNull(),
   locale: text("locale").default("es-CO").notNull(),
   createdAt: timestamp("created_at", { withTimezone: true })
@@ -188,6 +196,26 @@ export const users = pgTable("users", {
   notificationPreferences: jsonb("notification_preferences")
     .default(defaultJsonb)
     .notNull(),
+}).enableRLS();
+
+export const authSessions = pgTable("auth_sessions", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  token: text("token").notNull().unique(),
+  userId: uuid("user_id").notNull().references(() => users.id, { onDelete: "cascade" }),
+  expiresAt: timestamp("expires_at", { withTimezone: true }).notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
+  ipAddress: text("ip_address"),
+  userAgent: text("user_agent"),
+}, (table) => [
+  index("auth_sessions_user_idx").on(table.userId),
+  index("auth_sessions_expiry_idx").on(table.expiresAt),
+]).enableRLS();
+
+export const authAttempts = pgTable("auth_attempts", {
+  verificationSessionId: uuid("verification_session_id").primaryKey()
+    .references(() => emailVerificationSessions.id, { onDelete: "cascade" }),
+  count: integer("count").default(0).notNull(),
 }).enableRLS();
 
 export const workspaces = pgTable("workspaces", {
