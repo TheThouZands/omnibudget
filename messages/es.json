@@ -90,7 +90,6 @@
       "title": "Hagámoslo suyo.",
       "description": "Complete estos datos para crear su cuenta.",
       "username": "Nombre o apodo",
-      "passwordHelp": "Use entre 8 y 128 caracteres, con mayúscula, minúscula, número y símbolo.",
       "workspaceName": "Nombre de su espacio de trabajo",
       "country": "País (opcional)",
       "chooseCountry": "Seleccionar país",
@@ -99,7 +98,28 @@
       "noPhoneCountry": "Sin prefijo",
       "submit": "Crear cuenta"
     },
+    "passwordSetup": {
+      "confirmLabel": "Confirmar contraseña",
+      "requirements": "Requisitos de la contraseña",
+      "strengthLabel": "Fortaleza estimada",
+      "empty": "Escriba una contraseña",
+      "calculating": "Calculando…",
+      "unavailable": "Estimación no disponible",
+      "met": "Cumplido",
+      "unmet": "Pendiente",
+      "match": "Coincide con la contraseña",
+      "rules": {
+        "length": "Entre 8 y 128 caracteres",
+        "uppercase": "Una letra mayúscula",
+        "lowercase": "Una letra minúscula",
+        "number": "Un número",
+        "special": "Un símbolo, como !, # o @"
+      },
+      "strength": { "0": "Muy débil", "1": "Débil", "2": "Aceptable", "3": "Fuerte", "4": "Muy fuerte" }
+    },
     "errors": {
+      "invalid_password": "Revise los requisitos de la contraseña.",
+      "password_mismatch": "Las contraseñas deben coincidir.",
       "email_verification_required": "Vuelva a verificar su correo. Puede hacerlo desde «Cambiar correo».",
       "too_many_attempts": "Se alcanzó el límite de intentos. Use «Cambiar correo» para verificarlo de nuevo.",
       "invalid_credentials": "La contraseña no coincide. Revísela e inténtelo de nuevo.",

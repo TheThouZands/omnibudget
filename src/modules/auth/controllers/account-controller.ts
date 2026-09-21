@@ -49,7 +49,11 @@ export function accountController(loadRuntime = loadAccountRuntime) {
         response = await runtime.auth.api.verifiedLogin({ body: parsed.data, headers: request.headers, asResponse: true });
       } else {
         const parsed = registrationInput.safeParse(body);
-        if (!parsed.success) return json({ code: parsed.error.issues.some((issue) => issue.path[0] === "phone") ? "invalid_phone" : "invalid_input" }, 400);
+        if (!parsed.success) {
+          const field = parsed.error.issues[0]?.path[0];
+          const code = field === "password" ? "invalid_password" : field === "confirmPassword" ? "password_mismatch" : field === "phone" ? "invalid_phone" : "invalid_input";
+          return json({ code }, 400);
+        }
         response = await runtime.auth.api.verifiedRegister({ body: parsed.data, headers: request.headers, asResponse: true });
       }
       for (const [name, value] of Object.entries(privateHeaders)) response.headers.set(name, value);

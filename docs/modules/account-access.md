@@ -31,4 +31,8 @@ Los formularios conservan identificadores y nombres estables. El correo verifica
 
 El campo de correo se muestra desde el inicio. Mientras se consulta la sesión, solo se desactiva el botón para continuar. Los campos obligatorios del registro tienen un asterisco rojo y conservan la validación nativa. El prefijo telefónico sigue al país del perfil hasta que la persona elige otro en su selector. Los números internacionales completos se separan al salir del campo; el servidor vuelve a normalizar el envío, incluso si el autocompletado no dispara los eventos del navegador.
 
+La contraseña nueva y su confirmación usan `autocomplete="new-password"`. Zod valida los requisitos y la coincidencia exacta tanto en el navegador como en el servidor. La confirmación no se guarda. Los requisitos aparecen solo al enfocar el campo, con indicadores que cambian al escribir. El campo de confirmación muestra únicamente si ambas contraseñas coinciden.
+
+La barra de fortaleza usa `@zxcvbn-ts/core`, con diccionarios comunes, ingleses y españoles. Su puntuación es orientativa y no añade un requisito de registro. El cálculo se ejecuta en un Web Worker local, separado del hilo de la interfaz, sin enviar contraseñas a terceros. El navegador descarta resultados de entradas anteriores y termina el Worker al salir del registro. Floating UI posiciona las ayudas a la izquierda o arriba, según el espacio disponible; el viewport visual permite ajustar la posición cuando aparece el teclado. Las atribuciones están en `THIRD_PARTY_NOTICES.md`.
+
 Las tablas tienen RLS activo. El servidor accede con la conexión PostgreSQL privada. Las credenciales de Supabase para el navegador no conceden acceso a las sesiones.

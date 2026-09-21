@@ -9,7 +9,7 @@ import { createVerificationSessionService } from "../services/verification-sessi
 
 const origin = "http://localhost:3000";
 const email = "person@example.com";
-const input = { email, password: "A long test password 1!", username: "Personal", country: "", phone: "", workspaceName: "Home" };
+const input = { email, password: "A long test password 1!", confirmPassword: "A long test password 1!", username: "Personal", country: "", phone: "", workspaceName: "Home" };
 
 async function setup() {
   const database = {};
@@ -26,6 +26,13 @@ async function setup() {
 }
 
 describe("account HTTP boundary", () => {
+  it.each([undefined, "", "A different password 1!"])("requires exact password confirmation at the server", async (confirmPassword) => {
+    const { controller, request } = await setup();
+    const response = await controller.register(request("POST", { ...input, confirmPassword }));
+    expect(response.status).toBe(400);
+    expect(await response.json()).toEqual({ code: "password_mismatch" });
+    expect(await (await controller.status(request())).json()).toEqual({ step: "register", email });
+  });
   it.each(["short1!", "lowercase1!", "UPPERCASE1!", "NoNumber!", "NoSymbol1"])("rejects a password outside the policy: %s", async (password) => {
     const { controller, request } = await setup();
     expect((await controller.register(request("POST", { ...input, password }))).status).toBe(400);

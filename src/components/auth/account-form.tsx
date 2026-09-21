@@ -10,7 +10,9 @@ import {
 } from "@/modules/auth/client/account-client";
 import styles from "./access-flow.module.scss";
 import { PhoneField } from "./phone-field";
-import { PASSWORD_MIN_LENGTH, PASSWORD_MAX_LENGTH } from "@/modules/auth/models/password-policy";
+import { PASSWORD_MAX_LENGTH } from "@/modules/auth/models/password-policy";
+import { registrationInput } from "@/modules/auth/models/account-input";
+import { PasswordFields } from "./password-fields";
 
 const requiredMarker = <span className={styles.requiredMarker} aria-hidden="true">*</span>;
 
@@ -78,6 +80,16 @@ export function AccountForm({
     const fields: Record<string, string> = {};
     for (const [key, value] of data.entries())
       if (typeof value === "string") fields[key] = value;
+    if (registration) {
+      const parsed = registrationInput.safeParse(fields);
+      if (!parsed.success) {
+        const field = parsed.error.issues[0]?.path[0];
+        setError(t(field === "password" ? "errors.invalid_password" : field === "confirmPassword" ? "errors.password_mismatch" : "errors.invalid_input"));
+        const input = typeof field === "string" ? event.currentTarget.elements.namedItem(field) : null;
+        if (input instanceof HTMLElement) input.focus();
+        return;
+      }
+    }
     await run(async (signal) => {
       await submitAccount(step, fields, signal);
       onSuccess();
@@ -98,6 +110,7 @@ export function AccountForm({
         autoComplete="on"
         className={styles.form}
         onSubmit={submit}
+        onChange={() => setError("")}
         aria-busy={busy}
       >
         <label htmlFor="access-email">{t("email.label")}{registration && requiredMarker}</label>
@@ -127,24 +140,22 @@ export function AccountForm({
             />
           </>
         )}
-        <label htmlFor="access-password">{t("account.password")}{registration && requiredMarker}</label>
+        {registration ? <PasswordFields disabled={busy} email={email} /> : <>
+        <label htmlFor="access-password">{t("account.password")}</label>
         <input
           id="access-password"
           name="password"
           type="password"
-          autoComplete={registration ? "new-password" : "current-password"}
+          autoComplete="current-password"
           required
-          minLength={registration ? PASSWORD_MIN_LENGTH : 1}
+          minLength={1}
           maxLength={PASSWORD_MAX_LENGTH}
           disabled={busy}
-          autoFocus={!registration}
-          aria-describedby={registration ? "access-password-help" : undefined}
+          autoFocus
         />
+        </>}
         {registration && (
           <>
-            <p id="access-password-help" className={styles.fieldHelp}>
-              {t("register.passwordHelp")}
-            </p>
             <label htmlFor="access-workspace-name">
               {t("register.workspaceName")}
               {requiredMarker}

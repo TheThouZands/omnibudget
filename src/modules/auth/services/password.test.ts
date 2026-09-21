@@ -12,7 +12,7 @@ describe("account credentials", () => {
     expect(await hashPassword("a long test password")).not.toBe(hash);
   });
 
-  const input = { email: "person@example.com", password: "A long test password 1!", username: "My family", workspaceName: "Household", country: "", phone: "" };
+  const input = { email: "person@example.com", password: "A long test password 1!", confirmPassword: "A long test password 1!", username: "My family", workspaceName: "Household", country: "", phone: "" };
 
   it("accepts display names and optional profile fields", () => {
     expect(registrationInput.parse(input)).toEqual(input);

@@ -5,9 +5,10 @@ import { createAccountAuth } from "./account-auth";
 import { MemoryAccountRepository } from "../repositories/memory-account-repository";
 import { MemoryVerificationSessionRepository } from "../repositories/memory-verification-session-repository";
 import { createVerificationSessionService } from "../services/verification-session-service";
+import { hashPassword } from "../services/password";
 
 const email = "person@example.com";
-const registration = { email, password: "My long test password 1!", username: "My family", workspaceName: "Home", country: "", phone: "" };
+const registration = { email, password: "My long test password 1!", confirmPassword: "My long test password 1!", username: "My family", workspaceName: "Home", country: "", phone: "" };
 
 function setup() {
   const database: MemoryDB = {};
@@ -22,6 +23,13 @@ function setup() {
 }
 
 describe("OTP-gated Better Auth", () => {
+  it("allows an existing account to use its legacy password after OTP", async () => {
+    const { auth, headers, accounts } = setup();
+    const password = "legacy lowercase password";
+    await accounts.create({ ...registration, password, confirmPassword: password }, await hashPassword(password));
+    const response = await auth.api.verifiedLogin({ body: { email, password }, headers: await headers(), asResponse: true });
+    expect(response.status).toBe(200);
+  });
   it("registers unresolved phone data without exposing it in session responses", async () => {
     const { auth, headers, accounts } = setup();
     const response = await auth.api.verifiedRegister({ body: { ...registration, phone: "3001234567" }, headers: await headers(), asResponse: true });
@@ -49,6 +57,7 @@ describe("OTP-gated Better Auth", () => {
     expect(session?.user).not.toHaveProperty("phone");
     expect((await accounts.findByEmail(email))?.phoneVerified).toBe(false);
     expect((await accounts.findByEmail(email))?.defaultWorkspaceName).toBe("Home");
+    expect(await accounts.findByEmail(email)).not.toHaveProperty("confirmPassword");
     expect(database.authSessions).toHaveLength(1);
     const replay = await auth.api.verifiedLogin({ body: { email, password: registration.password }, headers: proof, asResponse: true });
     expect(replay.status).toBe(401);
