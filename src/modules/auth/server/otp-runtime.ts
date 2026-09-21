@@ -69,6 +69,27 @@ function hashSecret(production: boolean) {
   return globalForOtp.otpDevelopmentHashSecret;
 }
 
+function smtpPort() {
+  const value = requireEnv(["SMTP_PORT"], "SMTP port");
+  const port = Number(value);
+
+  if (!Number.isInteger(port) || port < 1 || port > 65_535) {
+    throw new Error("SMTP_PORT must be an integer from 1 through 65535.");
+  }
+
+  return port;
+}
+
+function smtpSecure() {
+  const value = requireEnv(["SMTP_SECURE"], "SMTP secure transport flag");
+
+  if (value !== "true" && value !== "false") {
+    throw new Error("SMTP_SECURE must be true or false.");
+  }
+
+  return value === "true";
+}
+
 async function repository(store: StoreMode): Promise<OtpChallengeRepository> {
   if (store === "memory") {
     globalForOtp.otpMemoryRepository ??= new MemoryOtpRepository();
@@ -90,18 +111,18 @@ async function sender(delivery: DeliveryMode): Promise<OtpCodeSender> {
   }
 
   if (!globalForOtp.otpSmtpSender) {
-    const { createPurelymailOtpSender } = await import(
-      "../services/purelymail-otp-sender"
+    const { createSmtpOtpSender } = await import(
+      "../services/smtp-otp-sender"
     );
-    const user = requireEnv(
-      ["PURELYMAIL_SMTP_USER"],
-      "Purelymail SMTP user",
-    );
-    globalForOtp.otpSmtpSender = createPurelymailOtpSender({
+    const user = requireEnv(["SMTP_USER"], "SMTP user");
+    globalForOtp.otpSmtpSender = createSmtpOtpSender({
+      host: requireEnv(["SMTP_HOST"], "SMTP host"),
+      port: smtpPort(),
+      secure: smtpSecure(),
       user,
       password: requireEnv(
-        ["PURELYMAIL_SMTP_PASSWORD"],
-        "Purelymail SMTP password or app password",
+        ["SMTP_PASSWORD"],
+        "SMTP password or app password",
       ),
       from: readEnv("OTP_EMAIL_FROM") ?? user,
     });

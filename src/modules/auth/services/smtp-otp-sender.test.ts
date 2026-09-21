@@ -9,16 +9,19 @@ vi.mock("nodemailer", () => ({
   default: { createTransport: mail.createTransport },
 }));
 
-import { createPurelymailOtpSender } from "./purelymail-otp-sender";
+import { createSmtpOtpSender } from "./smtp-otp-sender";
 
-describe("Purelymail OTP sender", () => {
+describe("SMTP OTP sender", () => {
   beforeEach(() => {
     mail.sendMail.mockClear();
     mail.createTransport.mockReset().mockReturnValue({ sendMail: mail.sendMail });
   });
 
-  it("uses authenticated TLS and sends only the requested code", async () => {
-    const sender = createPurelymailOtpSender({
+  it("uses the configured authenticated transport and sends only the code", async () => {
+    const sender = createSmtpOtpSender({
+      host: "mail.example.com",
+      port: 2465,
+      secure: true,
       user: "access@example.com",
       password: "private-app-password",
       from: "Omnibudget <access@example.com>",
@@ -30,8 +33,8 @@ describe("Purelymail OTP sender", () => {
     });
 
     expect(mail.createTransport).toHaveBeenCalledWith({
-      host: "smtp.purelymail.com",
-      port: 465,
+      host: "mail.example.com",
+      port: 2465,
       secure: true,
       auth: {
         user: "access@example.com",

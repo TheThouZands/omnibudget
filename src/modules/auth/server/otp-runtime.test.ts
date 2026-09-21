@@ -46,4 +46,34 @@ describe("OTP runtime modes", () => {
       "OTP_STORE_MODE must be one of: memory, database.",
     );
   });
+
+  it("validates the configured SMTP port before it creates a sender", async () => {
+    vi.stubEnv("NODE_ENV", "development");
+    vi.stubEnv("OTP_STORE_MODE", "memory");
+    vi.stubEnv("OTP_DELIVERY_MODE", "smtp");
+    vi.stubEnv("SMTP_HOST", "mail.example.com");
+    vi.stubEnv("SMTP_PORT", "70000");
+    vi.stubEnv("SMTP_SECURE", "true");
+    vi.stubEnv("SMTP_USER", "access@example.com");
+    vi.stubEnv("SMTP_PASSWORD", "private-app-password");
+
+    await expect(loadOtpService()).rejects.toThrow(
+      "SMTP_PORT must be an integer from 1 through 65535.",
+    );
+  });
+
+  it("validates the configured SMTP security flag", async () => {
+    vi.stubEnv("NODE_ENV", "development");
+    vi.stubEnv("OTP_STORE_MODE", "memory");
+    vi.stubEnv("OTP_DELIVERY_MODE", "smtp");
+    vi.stubEnv("SMTP_HOST", "mail.example.com");
+    vi.stubEnv("SMTP_PORT", "465");
+    vi.stubEnv("SMTP_SECURE", "sometimes");
+    vi.stubEnv("SMTP_USER", "access@example.com");
+    vi.stubEnv("SMTP_PASSWORD", "private-app-password");
+
+    await expect(loadOtpService()).rejects.toThrow(
+      "SMTP_SECURE must be true or false.",
+    );
+  });
 });

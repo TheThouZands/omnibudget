@@ -2,21 +2,27 @@ import nodemailer from "nodemailer";
 
 import type { OtpCodeSender } from "../models/otp";
 
-type PurelymailOtpSenderOptions = {
+export type SmtpOtpSenderOptions = {
+  host: string;
+  port: number;
+  secure: boolean;
   user: string;
   password: string;
   from: string;
 };
 
-export function createPurelymailOtpSender({
+export function createSmtpOtpSender({
+  host,
+  port,
+  secure,
   user,
   password,
   from,
-}: PurelymailOtpSenderOptions): OtpCodeSender {
+}: SmtpOtpSenderOptions): OtpCodeSender {
   const transporter = nodemailer.createTransport({
-    host: "smtp.purelymail.com",
-    port: 465,
-    secure: true,
+    host,
+    port,
+    secure,
     auth: { user, pass: password },
   });
 
