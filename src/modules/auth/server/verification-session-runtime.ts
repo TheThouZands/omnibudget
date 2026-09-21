@@ -13,7 +13,7 @@ const globalForVerificationSessions = globalThis as unknown as {
   verificationSessionDevelopmentHashSecret?: string;
 };
 
-function storeMode(production: boolean): StoreMode {
+export function verificationStoreMode(production: boolean): StoreMode {
   const configured = readEnv("VERIFICATION_SESSION_STORE_MODE")
     ?? readEnv("OTP_STORE_MODE")
     ?? (production ? "database" : "memory");
@@ -69,7 +69,7 @@ export async function loadVerificationSessionService() {
   const production = process.env.NODE_ENV === "production";
 
   return createVerificationSessionService({
-    repository: await repository(storeMode(production)),
+    repository: await repository(verificationStoreMode(production)),
     hashSecret: hashSecret(production),
   });
 }

@@ -6,6 +6,10 @@ import {
 const DEVELOPMENT_COOKIE_NAME = "ob_email_verification";
 const PRODUCTION_COOKIE_NAME = "__Host-ob_email_verification";
 
+export function clearVerificationSessionCookie(production = isProduction()) {
+  return `${verificationSessionCookieName(production)}=; Path=/; Max-Age=0; HttpOnly; SameSite=Strict${production ? "; Secure" : ""}`;
+}
+
 function isProduction() {
   return process.env.NODE_ENV === "production";
 }

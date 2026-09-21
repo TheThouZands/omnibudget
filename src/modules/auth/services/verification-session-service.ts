@@ -93,5 +93,10 @@ export function createVerificationSessionService({
 
       await repository.revoke(digest(token), now());
     },
+
+    async consume(token: string | undefined) {
+      if (!token || !isVerificationSessionToken(token)) return false;
+      return repository.consume(digest(token), now());
+    },
   };
 }

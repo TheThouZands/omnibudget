@@ -44,6 +44,7 @@ function sessions(
     issue,
     find: vi.fn(async () => null),
     revoke: vi.fn(async () => undefined),
+    consume: vi.fn(async () => false),
   });
 }
 

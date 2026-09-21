@@ -24,6 +24,7 @@ function loader(): VerificationSessionServiceLoader {
     issue: vi.fn(),
     find: vi.fn(async (token) => token === TOKEN ? SESSION : null),
     revoke: vi.fn(),
+    consume: vi.fn(),
   });
 }
 

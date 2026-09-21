@@ -48,4 +48,11 @@ implements VerificationSessionRepository {
     const session = this.sessions.get(tokenDigest);
     return session ? { ...session } : undefined;
   }
+
+  async consume(tokenDigest: string, now: Date) {
+    const session = this.sessions.get(tokenDigest);
+    if (!session || session.revokedAt || session.expiresAt <= now) return false;
+    session.revokedAt = now;
+    return true;
+  }
 }

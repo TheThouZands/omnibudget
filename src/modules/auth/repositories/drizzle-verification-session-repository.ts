@@ -57,4 +57,15 @@ implements VerificationSessionRepository {
         isNull(emailVerificationSessions.revokedAt),
       ));
   }
+
+  async consume(tokenDigest: string, now: Date) {
+    const claimed = await db.update(emailVerificationSessions)
+      .set({ revokedAt: now })
+      .where(and(
+        eq(emailVerificationSessions.tokenDigest, tokenDigest),
+        isNull(emailVerificationSessions.revokedAt),
+        gt(emailVerificationSessions.expiresAt, now),
+      )).returning({ id: emailVerificationSessions.id });
+    return claimed.length === 1;
+  }
 }

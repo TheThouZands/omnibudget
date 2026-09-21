@@ -23,6 +23,7 @@ export interface VerificationSessionRepository {
     now: Date,
   ): Promise<EmailVerificationSession | null>;
   revoke(tokenDigest: string, revokedAt: Date): Promise<void>;
+  consume(tokenDigest: string, now: Date): Promise<boolean>;
 }
 
 export type IssuedVerificationSession = {
