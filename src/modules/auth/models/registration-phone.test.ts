@@ -33,7 +33,7 @@ describe("optional registration phone", () => {
     expect(registrationPhone({ phone: "", country: "CO" })).toMatchObject({ phoneInput: null, phone: null, phoneNeedsReview: false });
   });
 
-  const input = { email: "person@example.com", password: "a long test password", username: "Person", workspaceName: "Home", country: "", phone: "123" };
+  const input = { email: "person@example.com", password: "A long test password 1!", username: "Person", workspaceName: "Home", country: "", phone: "123" };
   it("accepts unresolved phone input and can be parsed at both HTTP boundaries", () => {
     const parsed = registrationInput.parse({ ...input, phoneCountry: "GB" });
     expect(registrationInput.parse(parsed)).toEqual(parsed);

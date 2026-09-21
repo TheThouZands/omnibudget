@@ -90,7 +90,7 @@
       "title": "Hagámoslo suyo.",
       "description": "Complete estos datos para crear su cuenta.",
       "username": "Nombre o apodo",
-      "passwordHelp": "Use entre 12 y 128 caracteres. Puede incluir espacios.",
+      "passwordHelp": "Use entre 8 y 128 caracteres, con mayúscula, minúscula, número y símbolo.",
       "workspaceName": "Nombre de su espacio de trabajo",
       "country": "País (opcional)",
       "chooseCountry": "Seleccionar país",

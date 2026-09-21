@@ -6,7 +6,7 @@ El acceso usa Better Auth, su adaptador Drizzle y Argon2id, como el proyecto `po
 
 1. El usuario escribe su correo y verifica el código OTP.
 2. El servidor consulta la cuenta solo después de validar la sesión de verificación de ese navegador.
-3. Si la cuenta existe, solicita la contraseña. Si no existe, solicita los datos de registro y una contraseña de 12 a 128 caracteres.
+3. Si la cuenta existe, solicita la contraseña. Si no existe, solicita los datos de registro y una contraseña de 8 a 128 caracteres, con al menos una mayúscula, una minúscula, un número y un símbolo. Zod aplica la política compartida. Los espacios se conservan, pero no cuentan como símbolo. La nueva política no bloquea el acceso de cuentas con contraseñas anteriores.
 4. El servidor comprueba otra vez el correo verificado y consume la autorización de forma atómica. Una autorización solo permite un acceso correcto. El servidor limita los intentos de contraseña a cinco por autorización.
 5. Better Auth crea una sesión de 30 días, con una cookie HttpOnly y SameSite=Strict; en producción también usa Secure. La sesión no se renueva de forma automática. Cerrar sesión elimina el registro del servidor.
 

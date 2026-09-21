@@ -10,6 +10,7 @@ import {
 } from "@/modules/auth/client/account-client";
 import styles from "./access-flow.module.scss";
 import { PhoneField } from "./phone-field";
+import { PASSWORD_MIN_LENGTH, PASSWORD_MAX_LENGTH } from "@/modules/auth/models/password-policy";
 
 const requiredMarker = <span className={styles.requiredMarker} aria-hidden="true">*</span>;
 
@@ -133,8 +134,8 @@ export function AccountForm({
           type="password"
           autoComplete={registration ? "new-password" : "current-password"}
           required
-          minLength={registration ? 12 : 1}
-          maxLength={128}
+          minLength={registration ? PASSWORD_MIN_LENGTH : 1}
+          maxLength={PASSWORD_MAX_LENGTH}
           disabled={busy}
           autoFocus={!registration}
           aria-describedby={registration ? "access-password-help" : undefined}

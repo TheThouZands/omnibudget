@@ -7,7 +7,7 @@ import { MemoryVerificationSessionRepository } from "../repositories/memory-veri
 import { createVerificationSessionService } from "../services/verification-session-service";
 
 const email = "person@example.com";
-const registration = { email, password: "my long test password", username: "My family", workspaceName: "Home", country: "", phone: "" };
+const registration = { email, password: "My long test password 1!", username: "My family", workspaceName: "Home", country: "", phone: "" };
 
 function setup() {
   const database: MemoryDB = {};
