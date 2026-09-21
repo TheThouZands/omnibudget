@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 
-import { AccessPage } from "@/components/auth/access-page";
+import { AccessEntry } from "@/components/auth/access-entry";
 
 export const metadata: Metadata = {
   title: "Acceso | Omnibudget",
@@ -8,5 +8,5 @@ export const metadata: Metadata = {
 };
 
 export default function LoginPage() {
-  return <AccessPage />;
+  return <AccessEntry />;
 }

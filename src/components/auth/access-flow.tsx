@@ -8,9 +8,9 @@ import {
   useRef,
   useState,
 } from "react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
-import { useRouter } from "@/i18n/navigation";
+import { getPathname, useRouter } from "@/i18n/navigation";
 import {
   OtpClientError,
   requestOtp,
@@ -27,6 +27,7 @@ type RequestStage = AccessStep | null;
 export function AccessFlow() {
   const t = useTranslations("Auth");
   const router = useRouter();
+  const locale = useLocale();
   const headingId = useId();
   const [step, setStep] = useState<AccessStep>("email");
   const [checkingAccess, setCheckingAccess] = useState(true);
@@ -158,7 +159,11 @@ export function AccessFlow() {
   return (
     <section className={styles.panel} aria-labelledby={headingId}>
       {step === "login" || step === "register" ? (
-        <AccountForm key={`${step}:${email}`} step={step} email={email} headingId={headingId} onSuccess={() => router.replace("/csv-import")} onChangeEmail={returnToEmail} />
+        <AccountForm key={`${step}:${email}`} step={step} email={email} headingId={headingId} onSuccess={() => {
+          // The API changed the session cookie. Start a fresh document so cached
+          // guest routes and intercepted dialogs cannot survive the auth change.
+          window.location.replace(getPathname({ href: "/csv-import", locale }));
+        }} onChangeEmail={returnToEmail} />
       ) : step === "email" ? (
         <>
           <div className={styles.introduction}>

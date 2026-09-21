@@ -1,5 +1,5 @@
-import { AccessModal } from "@/components/auth/access-modal";
+import { AccessEntry } from "@/components/auth/access-entry";
 
 export default function RegisterModalPage() {
-  return <AccessModal />;
+  return <AccessEntry modal />;
 }
