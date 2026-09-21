@@ -64,15 +64,26 @@
       "description": "Escriba su correo electrónico. Le enviaremos un código para continuar.",
       "label": "Correo electrónico",
       "placeholder": "nombre@ejemplo.com",
-      "submit": "Continuar"
+      "submit": "Continuar",
+      "pending": "Enviando código…"
     },
     "code": {
       "title": "Revise su correo.",
       "description": "Escriba el código de seis dígitos que enviamos a {email}.",
       "label": "Código de verificación",
       "submit": "Continuar",
+      "pending": "Verificando…",
       "changeEmail": "Cambiar correo",
-      "serverRequired": "No pudimos verificar el código. Revíselo e inténtelo de nuevo."
+      "developmentCode": "Prueba local: use el código {code}."
+    },
+    "errors": {
+      "invalid_request": "Revise la información e inténtelo de nuevo.",
+      "rate_limited": "Espere un momento antes de solicitar otro código.",
+      "delivery_failed": "No pudimos enviar el código. Inténtelo de nuevo.",
+      "code_invalid_or_expired": "El código no es válido o ya venció. Revíselo e inténtelo de nuevo.",
+      "processing_failed": "No pudimos completar la solicitud. Inténtelo de nuevo.",
+      "network_error": "No pudimos conectar con el servidor. Compruebe la conexión e inténtelo de nuevo.",
+      "request_failed": "No recibimos una respuesta válida del servidor. Inténtelo de nuevo."
     }
   },
   "CsvImport": {

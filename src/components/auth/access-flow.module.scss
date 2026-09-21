@@ -71,6 +71,12 @@
   filter: brightness(1.1);
 }
 
+.form button:disabled,
+.textButton:disabled {
+  cursor: wait;
+  opacity: 0.62;
+}
+
 .form button:focus-visible,
 .textButton:focus-visible {
   outline: 2px solid var(--color-accent);
