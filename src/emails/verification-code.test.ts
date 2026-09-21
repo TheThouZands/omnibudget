@@ -5,37 +5,39 @@ import { renderVerificationCodeEmail } from "./verification-code";
 
 const example = {
   code: "042731",
-  expiresAt: new Date("2026-09-20T17:10:00.000Z"),
+  expiresInMinutes: 10,
 };
 
 describe("verification code email", () => {
   it("keeps a contiguous code with its leading zero in both alternatives", () => {
     const email = renderVerificationCodeEmail(example);
 
-    expect(email.text.split("\n")[0]).toBe("Su código de verificación de Omnibudget es: 042731.");
+    expect(email.text.split("\n")[0]).toBe("Su código de acceso a Omnibudget es: 042731.");
     expect(email.html).toMatch(/<p dir="ltr"[^>]*>042731<\/p>/);
     expect(email.html).toContain(email.text.split("\n")[0]);
     expect(email.subject).not.toContain(example.code);
   });
 
-  it("uses the actual expiry in Colombia time in both alternatives", () => {
+  it("keeps both alternatives limited to the code, lifetime and ignore notice", () => {
     const email = renderVerificationCodeEmail(example);
 
     for (const content of [email.text, email.html]) {
-      expect(content).toContain("Vence a las 12:10 (hora de Colombia).");
-      expect(content).toContain("la ventana donde lo solicitó");
-      expect(content).toContain("No lo comparta.");
+      expect(content).toContain("Vence en 10 minutos.");
+      expect(content).not.toContain("la ventana donde lo solicitó");
+      expect(content).not.toContain("hora de Colombia");
+      expect(content).not.toContain("No lo comparta.");
       expect(content).toContain("Si no solicitó este código");
     }
   });
 
-  it("renders midnight without an ambiguous 12-hour time", () => {
+  it("supports a different configured lifetime and singular wording", () => {
     const email = renderVerificationCodeEmail({
       ...example,
-      expiresAt: new Date("2026-09-21T05:05:00.000Z"),
+      expiresInMinutes: 1,
     });
 
-    expect(email.text).toContain("00:05 (hora de Colombia)");
+    expect(email.text).toContain("Vence en 1 minuto.");
+    expect(email.html).toContain("Vence en 1 minuto.");
   });
 
   it("uses self-contained inline styles without scripts, links or remote assets", () => {
@@ -73,8 +75,8 @@ describe("verification code email", () => {
     },
   );
 
-  it("rejects an invalid expiry", () => {
-    expect(() => renderVerificationCodeEmail({ ...example, expiresAt: new Date(NaN) })).toThrow(
+  it.each([0, -1, NaN, Infinity, 1.5])("rejects an invalid lifetime %j", (expiresInMinutes) => {
+    expect(() => renderVerificationCodeEmail({ ...example, expiresInMinutes })).toThrow(
       "Invalid verification email data",
     );
   });

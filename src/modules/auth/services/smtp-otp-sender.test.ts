@@ -50,8 +50,8 @@ describe("SMTP OTP sender", () => {
       html: expect.stringMatching(/<p dir="ltr"[^>]*>042731<\/p>/),
     }));
     expect(mail.sendMail).toHaveBeenCalledWith(expect.objectContaining({
-      text: expect.stringContaining("hora de Colombia"),
-      html: expect.stringContaining("hora de Colombia"),
+      text: expect.stringContaining("Vence en 10 minutos."),
+      html: expect.stringContaining("Vence en 10 minutos."),
     }));
     expect(result).toEqual({});
   });

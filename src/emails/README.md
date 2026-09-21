@@ -18,8 +18,8 @@ proveedor de correo distinto.
 El correo OTP conserva los seis dígitos como texto continuo. El espaciado es solo
 visual. El código aparece al principio del texto y en la vista previa del correo,
 pero no en el asunto. Los clientes pueden mostrarlo en sus notificaciones según
-la configuración del usuario. La fecha de vencimiento procede del desafío real;
-se presenta en hora de Colombia. El diseño no descarga imágenes ni fuentes.
+la configuración del usuario. La duración procede de la política OTP del servidor;
+se presenta como «Vence en 10 minutos». El diseño no descarga imágenes ni fuentes.
 
 El campo web ya usa `autocomplete="one-time-code"`, `inputmode="numeric"` y un
 único campo de texto. La detección, la acción «Copiar código» y el autocompletado

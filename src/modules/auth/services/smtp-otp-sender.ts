@@ -2,7 +2,7 @@ import nodemailer from "nodemailer";
 
 import { renderVerificationCodeEmail } from "@/emails/verification-code";
 
-import type { OtpCodeSender } from "../models/otp";
+import { OTP_POLICY, type OtpCodeSender } from "../models/otp";
 
 export type SmtpOtpSenderOptions = {
   host: string;
@@ -29,11 +29,11 @@ export function createSmtpOtpSender({
   });
 
   return {
-    async send({ to, code, expiresAt }) {
+    async send({ to, code }) {
       await transporter.sendMail({
         from,
         to,
-        ...renderVerificationCodeEmail({ code, expiresAt }),
+        ...renderVerificationCodeEmail({ code, expiresInMinutes: OTP_POLICY.lifetimeMs / 60_000 }),
       });
 
       return {};
