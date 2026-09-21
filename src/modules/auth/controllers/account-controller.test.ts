@@ -48,7 +48,7 @@ describe("account HTTP boundary", () => {
   it("validates input, bounds bodies, and marks responses private", async () => {
     const { controller, request } = await setup();
     expect((await controller.register(request("POST", { ...input, phoneVerified: true }))).status).toBe(400);
-    expect((await controller.register(request("POST", { ...input, phone: "123" }))).status).toBe(400);
+    expect((await controller.register(request("POST", { ...input, phone: "1".repeat(41) }))).status).toBe(400);
     const response = await controller.register(request("POST", { ...input, username: "a".repeat(4100) }));
     expect(response.status).toBe(413);
     expect(response.headers.get("cache-control")).toContain("no-store");

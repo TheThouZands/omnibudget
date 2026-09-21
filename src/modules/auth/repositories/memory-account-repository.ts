@@ -2,6 +2,7 @@ import { randomUUID } from "node:crypto";
 import type { MemoryDB } from "better-auth/adapters/memory";
 import type { AccountRepository, AuthUser } from "../models/account";
 import type { RegistrationInput } from "../models/account-input";
+import { registrationPhone } from "../models/registration-phone";
 
 export class MemoryAccountRepository implements AccountRepository {
   private attempts = new Map<string, { count: number; expiresAt: Date }>();
@@ -19,9 +20,8 @@ export class MemoryAccountRepository implements AccountRepository {
     const user: AuthUser = {
       id: randomUUID(), email: input.email, name: input.username,
       emailVerified: true, image: null, passwordHash,
-      country: input.country || null, phone: input.phone || null,
-      // TODO: Set true only after a future server-side phone verification service succeeds.
-      phoneVerified: false, defaultWorkspaceName: input.workspaceName,
+      country: input.country || null, ...registrationPhone(input),
+      defaultWorkspaceName: input.workspaceName,
       createdAt: new Date(), updatedAt: new Date(), deletedAt: null,
     };
     this.database.users.push(user);

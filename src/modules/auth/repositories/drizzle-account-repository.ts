@@ -3,6 +3,7 @@ import { db } from "@/db";
 import { authAttempts, users } from "@/db/schema";
 import type { AccountRepository } from "../models/account";
 import type { RegistrationInput } from "../models/account-input";
+import { registrationPhone } from "../models/registration-phone";
 
 export class DrizzleAccountRepository implements AccountRepository {
   async findByEmail(email: string) {
@@ -13,9 +14,8 @@ export class DrizzleAccountRepository implements AccountRepository {
   async create(input: RegistrationInput, passwordHash: string) {
     const [user] = await db.insert(users).values({
       email: input.email, name: input.username, emailVerified: true, passwordHash,
-      country: input.country || null, phone: input.phone || null,
-      // TODO: A future phone verification service must authorize this flag.
-      phoneVerified: false, defaultWorkspaceName: input.workspaceName,
+      country: input.country || null, ...registrationPhone(input),
+      defaultWorkspaceName: input.workspaceName,
     }).returning();
     return user;
   }

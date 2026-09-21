@@ -16,7 +16,7 @@ La verificación inicial mantiene su límite de 30 minutos. Otro navegador neces
 
 - El nombre de usuario es un nombre visible o apodo. No es un identificador único; el correo identifica la cuenta.
 - El país es opcional y usa un código ISO de dos letras.
-- El teléfono es opcional. `libphonenumber-js` valida el formato y lo convierte a E.164. El valor `phone_verified` siempre empieza en `false`. TODO: integrar un servicio de verificación antes de usar el teléfono como contacto verificado o mecanismo de recuperación.
+- El teléfono es opcional. El servidor usa `libphonenumber-js` para convertir los números válidos a E.164 en `phone`. Conserva el texto recibido en `phone_input` y la región telefónica en `phone_country`, separada del país del perfil. Si no puede normalizar el número, deja `phone` vacío y activa `phone_needs_review`, sin impedir el registro. Un prefijo internacional explícito tiene prioridad sobre la región seleccionada. El valor `phone_verified` siempre empieza en `false`. TODO: integrar un servicio de verificación antes de usar el teléfono como contacto verificado o mecanismo de recuperación.
 - El nombre del espacio de trabajo es obligatorio y se guarda en `default_workspace_name`. Este flujo no crea todavía el espacio de trabajo ni sus cuentas financieras.
 
 ## Entornos

@@ -22,6 +22,16 @@ function setup() {
 }
 
 describe("OTP-gated Better Auth", () => {
+  it("registers unresolved phone data without exposing it in session responses", async () => {
+    const { auth, headers, accounts } = setup();
+    const response = await auth.api.verifiedRegister({ body: { ...registration, phone: "3001234567" }, headers: await headers(), asResponse: true });
+    expect(response.status).toBe(200);
+    expect(await accounts.findByEmail(email)).toMatchObject({ phone: null, phoneInput: "3001234567", phoneNeedsReview: true, phoneVerified: false });
+    const cookie = response.headers.getSetCookie().find((value) => value.startsWith("omnibudget.session_token="))!.split(";")[0];
+    const session = await auth.api.getSession({ headers: new Headers({ cookie }) });
+    for (const field of ["phoneInput", "phoneCountry", "phoneNeedsReview", "phoneVerified"])
+      expect(session?.user).not.toHaveProperty(field);
+  });
   it("creates a profile and a persistent session, consumes the grant, and supports logout", async () => {
     const { auth, headers, database, accounts } = setup();
     const proof = await headers();

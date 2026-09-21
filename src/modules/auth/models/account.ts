@@ -9,6 +9,9 @@ export type AuthUser = {
   passwordHash: string;
   country: string | null;
   phone: string | null;
+  phoneInput: string | null;
+  phoneCountry: string | null;
+  phoneNeedsReview: boolean;
   phoneVerified: boolean;
   defaultWorkspaceName: string | null;
   createdAt: Date;

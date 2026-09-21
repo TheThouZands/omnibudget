@@ -18,13 +18,13 @@ describe("account credentials", () => {
     expect(registrationInput.parse(input)).toEqual(input);
   });
 
-  it("normalizes valid phone numbers without claiming verification", () => {
-    expect(registrationInput.parse({ ...input, country: "US", phone: "2025550123" }).phone).toBe("+12025550123");
+  it("preserves phone input for server-side normalization", () => {
+    expect(registrationInput.parse({ ...input, country: "US", phone: "2025550123" }).phone).toBe("2025550123");
   });
 
   it.each([
     { workspaceName: " " }, { username: " " }, { country: "ZZ" },
-    { phone: "123" }, { password: "short" }, { phoneVerified: true },
+    { phone: "1".repeat(41) }, { password: "short" }, { phoneVerified: true },
     { emailVerified: true }, { password: "x".repeat(129) },
   ])("rejects invalid or client-controlled protected fields: %o", (change) => {
     expect(registrationInput.safeParse({ ...input, ...change }).success).toBe(false);
