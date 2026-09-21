@@ -95,7 +95,8 @@
       "country": "País (opcional)",
       "chooseCountry": "Seleccionar país",
       "phone": "Teléfono (opcional)",
-      "phoneHelp": "Sin un país seleccionado, incluya el prefijo internacional, como +57.",
+      "phoneCountry": "Prefijo telefónico",
+      "noPhoneCountry": "Sin prefijo",
       "submit": "Crear cuenta"
     },
     "errors": {

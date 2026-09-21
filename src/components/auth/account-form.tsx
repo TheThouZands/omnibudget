@@ -2,13 +2,16 @@
 
 import { useEffect, useMemo, useRef, useState, type FormEvent } from "react";
 import { useLocale, useTranslations } from "next-intl";
-import { getCountries } from "libphonenumber-js/min";
+import { getCountries, type CountryCode } from "libphonenumber-js/min";
 import {
   AccountClientError,
   accountRequest,
   submitAccount,
 } from "@/modules/auth/client/account-client";
 import styles from "./access-flow.module.scss";
+import { PhoneField } from "./phone-field";
+
+const requiredMarker = <span className={styles.requiredMarker} aria-hidden="true">*</span>;
 
 type Props = {
   step: "login" | "register";
@@ -29,6 +32,7 @@ export function AccountForm({
   const locale = useLocale();
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
+  const [country, setCountry] = useState<CountryCode | "">("");
   const active = useRef<AbortController | null>(null);
   const registration = step === "register";
   const countries = useMemo(() => {
@@ -95,7 +99,7 @@ export function AccountForm({
         onSubmit={submit}
         aria-busy={busy}
       >
-        <label htmlFor="access-email">{t("email.label")}</label>
+        <label htmlFor="access-email">{t("email.label")}{registration && requiredMarker}</label>
         <input
           id="access-email"
           name="email"
@@ -103,17 +107,18 @@ export function AccountForm({
           autoComplete="username"
           value={email}
           readOnly
+          required
           autoCapitalize="none"
           spellCheck={false}
         />
         {registration && (
           <>
-            <label htmlFor="access-username">{t("register.username")}</label>
+            <label htmlFor="access-username">{t("register.username")}{requiredMarker}</label>
             <input
               id="access-username"
               name="username"
               type="text"
-              autoComplete="nickname"
+              autoComplete="name"
               required
               maxLength={80}
               disabled={busy}
@@ -121,7 +126,7 @@ export function AccountForm({
             />
           </>
         )}
-        <label htmlFor="access-password">{t("account.password")}</label>
+        <label htmlFor="access-password">{t("account.password")}{registration && requiredMarker}</label>
         <input
           id="access-password"
           name="password"
@@ -141,6 +146,7 @@ export function AccountForm({
             </p>
             <label htmlFor="access-workspace-name">
               {t("register.workspaceName")}
+              {requiredMarker}
             </label>
             <input
               id="access-workspace-name"
@@ -156,7 +162,8 @@ export function AccountForm({
               id="access-country"
               name="country"
               autoComplete="country"
-              defaultValue=""
+              value={country}
+              onChange={(event) => setCountry(event.target.value as CountryCode | "")}
               disabled={busy}
             >
               <option value="">{t("register.chooseCountry")}</option>
@@ -167,19 +174,7 @@ export function AccountForm({
               ))}
             </select>
             <label htmlFor="access-phone">{t("register.phone")}</label>
-            <input
-              id="access-phone"
-              name="phone"
-              type="tel"
-              inputMode="tel"
-              autoComplete="tel"
-              maxLength={40}
-              disabled={busy}
-              aria-describedby="access-phone-help"
-            />
-            <p id="access-phone-help" className={styles.fieldHelp}>
-              {t("register.phoneHelp")}
-            </p>
+            <PhoneField country={country} countries={countries} disabled={busy} />
           </>
         )}
         <button type="submit" disabled={busy}>
